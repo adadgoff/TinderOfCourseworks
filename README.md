@@ -5,7 +5,7 @@
 ## Комментарии к проекту
 
 1. Независимость от ВУЗа;
-2. мультиязычность;
+2. Мультиязычность;
 
 ## Необходимые знания
 
@@ -52,5 +52,5 @@
 
 ### Git
 
-1. Все коммиты в стиле: `"{Project | Backend | Frontend}: *Comment from capital letter*."`;
+1. Все коммиты в стиле: `"{Project | Backend | Frontend}: *Comment from capital letter*"`;
 2. Две ветки develop & main.
