@@ -22,6 +22,7 @@
         - [ ] Building Python Microservices with FastAPI - Sherwin John C. Tragura;
         - [ ] От монолита к микросервисам - С. Ньюмен;
         - [ ] Микросервисы. Паттеры разработки и рефакторинга - К. Ричардсон;
+        - [ ] Microservice APIs: With examples in Python - Jose Haro Peralta;
     - [ ] Книги по DDD
         - [ ] Implementing DDD - Vaughn Vernon;
         - [ ] DDD - Eric Evans.
