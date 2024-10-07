@@ -30,7 +30,12 @@
     - [ ] Логирование Sentry docs;
     - [ ] Мониторинг Graphana + Prometheus + Jaeger docs;
     - [ ] Тестирование pytest docs;
-    - [ ] CI/CD Jenkins + Travis CI docs.
+    - [ ] CI/CD
+        - [ ] Jenkins docs;
+        - [ ] Travis CI docs;
+        - [ ] Bamboo docs;
+        - [ ] GitHub Actions docs;
+        - [ ] GitHub CI docs.
 - [ ] Frontend
     - [ ] HTML docs;
     - [ ] CSS docs;
