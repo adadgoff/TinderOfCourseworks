@@ -44,6 +44,7 @@
     - [ ] CSS docs;
     - [ ] TypeScript docs;
     - [ ] React docs;
+    - [ ] Angular docs;
     - [ ] MaterialUI docs;
     - [ ] FSD docs.
 - [ ] Machine Learning
@@ -55,6 +56,8 @@
     - [ ] Kubernetes docs;
     - [ ] Kubernetes для DevOps - Д. Арундел;
     - [ ] Kubernetes на практике - Д. Россо;
+    - [ ] traefik docs;
+    - [ ] envoyproxy docs;
     - [ ] nginx docs.
 
 ## Код стайл
