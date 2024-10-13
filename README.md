@@ -28,7 +28,10 @@
         - [ ] DDD - Eric Evans.
     - [ ] Высоконагруженные приложения - М. Клеппман;
     - [ ] Логирование Sentry docs;
-    - [ ] Мониторинг Graphana + Prometheus + Jaeger docs;
+    - [ ] Мониторинг 
+        - [ ] Graphana docs;
+        - [ ] Prometheus docs;
+        - [ ] Jaeger docs.
     - [ ] Тестирование pytest docs;
     - [ ] CI/CD
         - [ ] Jenkins docs;
