@@ -5,7 +5,7 @@
 ## Комментарии к проекту
 
 1. Независимость от ВУЗа;
-2. мультиязычность;
+2. Мультиязычность;
 
 ## Необходимые знания
 
@@ -27,14 +27,23 @@
         - [ ] DDD - Eric Evans.
     - [ ] Высоконагруженные приложения - М. Клеппман;
     - [ ] Логирование Sentry docs;
-    - [ ] Мониторинг Graphana + Prometheus + Jaeger docs;
+    - [ ] Мониторинг 
+        - [ ] Graphana docs;
+        - [ ] Prometheus docs;
+        - [ ] Jaeger docs.
     - [ ] Тестирование pytest docs;
-    - [ ] CI/CD Jenkins + Travis CI docs.
+    - [ ] CI/CD
+        - [ ] Jenkins docs;
+        - [ ] Travis CI docs;
+        - [ ] Bamboo docs;
+        - [ ] GitHub Actions docs;
+        - [ ] GitHub CI docs.
 - [ ] Frontend
     - [ ] HTML docs;
     - [ ] CSS docs;
     - [ ] TypeScript docs;
     - [ ] React docs;
+    - [ ] Angular docs;
     - [ ] MaterialUI docs;
     - [ ] FSD docs.
 - [ ] Machine Learning
@@ -46,11 +55,13 @@
     - [ ] Kubernetes docs;
     - [ ] Kubernetes для DevOps - Д. Арундел;
     - [ ] Kubernetes на практике - Д. Россо;
+    - [ ] traefik docs;
+    - [ ] envoyproxy docs;
     - [ ] nginx docs.
 
 ## Код стайл
 
 ### Git
 
-1. Все коммиты в стиле: `"{Project | Backend | Frontend}: *Comment from capital letter*."`;
+1. Все коммиты в стиле: `"{Project | Backend | Frontend}: *Comment from capital letter*"`;
 2. Две ветки develop & main.
