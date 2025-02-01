@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  auth-postgres:
+    container_name: auth-postgres
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: auth-postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - auth-network
+    volumes:
+      - auth-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+  auth-rabbitmq:
+    container_name: auth-rabbitmq
+    image: rabbitmq:4.0.5-management
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - auth-network
+    volumes:
+      - auth-rabbitmq-data:/var/lib/rabbitmq
+      - auth-rabbitmq-logs:/var/log/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+networks:
+  auth-network:
+    driver: bridge
+
+volumes:
+  auth-postgres-data:
+  auth-rabbitmq-data:
+  auth-rabbitmq-logs:
