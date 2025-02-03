@@ -1,44 +1,44 @@
 [project]
 name = "auth"
 version = "0.1.0"
-description = "Auth microservice"
-authors = [
-    {name = "superart04", email = "adadgoff@mail.ru"}
-]
+description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = [
+dependencies = []
+
+[dependency-groups]
+adapters = [
+    "alembic>=1.14.1",
+    "asyncpg>=0.30.0",
+    "faststream[rabbit]>=0.5.34",
+    "sqlmodel>=0.0.22",
 ]
-
-
-[build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
-
-
-[tool.poetry.group.domains.dependencies]
-passlib = {extras = ["bcrypt"], version = "^1.7.4"}
-pydantic = {extras = ["email"], version = "^2.10.6"}
-
-
-[tool.poetry.group.adapters.dependencies]
-sqlmodel = "^0.0.22"
-
-
-[tool.poetry.group.linters.dependencies]
-mypy = "^1.14.1"
-pre-commit = "^4.1.0"
-ruff = "^0.9.3"
-types-passlib = "^1.7.7.20241221"  # Types for mypy.
+api = [
+    "grpcio>=1.70.0",
+    "grpcio-tools>=1.70.0",
+]
+config = [
+    "pydantic-settings>=2.7.1",
+]
+domain = [
+    "passlib[bcrypt]>=1.7.4",
+    "pydantic[email]>=2.10.6",
+]
+lint = [
+    "mypy>=1.14.1",
+    "pre-commit>=4.1.0",
+    "ruff>=0.9.4",
+]
+tests = [
+    "pytest>=8.3.4",
+]
 
 
 [tool.mypy]
 strict = true
 
-
 [tool.ruff]
 target-version = "py312"
-
 
 [tool.ruff.lint]
 select = [
@@ -51,7 +51,6 @@ select = [
     "UP",      # pyupgrade.
     "ARG001",  # unused arguments in functions.
 ]
-
 
 [tool.ruff.lint.isort]
 lines-after-imports = 2

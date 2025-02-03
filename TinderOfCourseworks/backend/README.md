@@ -2,7 +2,7 @@
 
 ## Core
 
-- Python 3.13
+- Python 3.12
 
 ## Python Libraries
 

@@ -1,13 +1,11 @@
-version: '3.8'
-
 services:
   auth-postgres:
     container_name: auth-postgres
     image: postgres:15
     environment:
+      POSTGRES_DB: auth-postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: auth-postgres
     ports:
       - "5432:5432"
     networks:
@@ -28,8 +26,10 @@ services:
       RABBITMQ_DEFAULT_USER: rabbitmq
       RABBITMQ_DEFAULT_PASS: rabbitmq
     ports:
+      - "5671:5671"
       - "5672:5672"
       - "15672:15672"
+      - "15671:15671"
     networks:
       - auth-network
     volumes:
