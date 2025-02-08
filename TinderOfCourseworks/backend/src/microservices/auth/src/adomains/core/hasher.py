@@ -4,10 +4,6 @@ from abc import (
 )
 
 from passlib.context import CryptContext
-from pydantic import (
-    BaseModel,
-    ConfigDict,
-)
 
 
 password_context = CryptContext(
@@ -16,31 +12,23 @@ password_context = CryptContext(
 )
 
 
-# TODO: separate in files.
-class IHasher(
-    ABC,
-    BaseModel,
-):
-    model_config = ConfigDict(
-        extra="forbid",
-        frozen=True,
-        strict=True,
-        validate_default=True,
-        validate_return=True,
-    )
-
+class IHasher(ABC):
     @abstractmethod
     def encode(
             self,
+            /,
+            *,
             password: str,
     ) -> str:
         pass
 
     @abstractmethod
     def verify(
-        self,
-        plain_password: str,
-        hashed_password: str,
+            self,
+            /,
+            *,
+            plain_password: str,
+            hashed_password: str,
     ) -> bool:
         pass
 
@@ -48,15 +36,25 @@ class IHasher(
 class Hasher(IHasher):
     def encode(
             self,
+            /,
+            *,
             password: str,
     ) -> str:
+        if not isinstance(password, str):
+            raise TypeError  # TODO: implement exception.
         return password_context.hash(secret=password)
 
     def verify(
             self,
+            /,
+            *,
             plain_password: str,
             hashed_password: str,
     ) -> bool:
+        if not isinstance(plain_password, str):
+            raise TypeError  # TODO: implement exception.
+        if not isinstance(hashed_password, str):
+            raise TypeError  # TODO: implement exception.
         return password_context.verify(
             secret=plain_password,
             hash=hashed_password,

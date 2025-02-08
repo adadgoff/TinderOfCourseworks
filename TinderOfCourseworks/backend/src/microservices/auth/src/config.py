@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import (
     computed_field,
     PostgresDsn,
@@ -14,6 +16,8 @@ class Settings(BaseSettings):
         env_file=".env",
         extra="forbid",
     )
+
+    MODE: Literal["prod", "dev", "test"]
 
     POSTGRES_DB: str
     POSTGRES_PORT: int
