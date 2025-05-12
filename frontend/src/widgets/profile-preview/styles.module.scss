@@ -1,0 +1,13 @@
+@use "src/app/_styles/variables.scss";
+
+.profilePreview {
+  background-color: var(--background);
+  border-color: transparent;
+  border-radius: 1.5rem;
+  border-style: solid;
+  border-width: 0.2rem;
+
+  &:hover {
+    transition: variables.$transition-time;
+  }
+}

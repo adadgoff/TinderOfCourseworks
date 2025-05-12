@@ -1,0 +1,54 @@
+@use "src/app/_styles/variables.scss";
+
+.imgInput {
+  border-color: var(--grey);
+  border-radius: 0.75rem;
+  border-style: solid;
+  border-width: 0.2rem;
+  display: flex;
+  height: fit-content;
+  position: relative;
+  transition: variables.$transition-time;
+  width: fit-content;
+
+  .img {
+    border-radius: 0.5rem;
+  }
+
+  .fileInput {
+    display: none;
+  }
+
+  &:hover {
+    border-color: var(--grey-stroke);
+  }
+}
+
+.editable {
+  cursor: pointer;
+
+  &:hover {
+    &::after {
+      opacity: 1;
+    }
+  }
+
+  &::after {
+    align-items: center;
+    background: var(--grey);
+    border-radius: 0.5rem;
+    bottom: 0;
+    color: var(--grey-stroke);
+    content: attr(data-hint);
+    display: flex;
+    font-size: 1.3rem;
+    justify-content: center;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    transition: variables.$transition-time;
+  }
+}

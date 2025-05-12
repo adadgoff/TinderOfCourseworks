@@ -1,0 +1,29 @@
+.profileView {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  .details {
+    align-items: center;
+    display: flex;
+    gap: 2rem;
+
+    .iconLastOnline {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      gap: 1rem;
+
+      .cityBirthDay {
+        display: flex;
+        gap: 2rem;
+      }
+    }
+  }
+}

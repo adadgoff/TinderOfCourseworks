@@ -1,0 +1,28 @@
+@use "src/app/_styles/variables.scss";
+
+.tabs {
+  align-items: center;
+  background-color: var(--grey);
+  border-radius: 3rem;
+  display: flex;
+  justify-content: space-between;
+  min-width: 18rem;
+
+  .tabButton {
+    background-color: var(--grey);
+    border-color: transparent;
+    border-radius: 3rem;
+    border-style: solid;
+    border-width: 0.2rem;
+    color: var(--grey-stroke);
+    cursor: pointer;
+    font-size: 2rem;
+    padding: 0.5rem;
+    transition: variables.$transition-time;
+
+    &.selected {
+      background-color: var(--blue);
+      color: var(--grey);
+    }
+  }
+}

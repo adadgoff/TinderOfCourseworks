@@ -1,0 +1,14 @@
+@use "src/app/_styles/variables.scss";
+
+.deleteButton {
+  border: none;
+  padding: 0;
+
+  svg {
+    transition: variables.$transition-time;
+
+    &:hover {
+      fill: var(--blue);
+    }
+  }
+}

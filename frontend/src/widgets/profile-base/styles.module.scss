@@ -1,0 +1,47 @@
+$full-name-lines: 1;
+$description-lines: 2;
+
+.profileBase {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-width: 0;
+
+    .header {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+
+      .fullName {
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: $full-name-lines;
+        display: -webkit-box;
+        font-size: 2rem;
+        line-clamp: $full-name-lines;
+        overflow: hidden;
+        text-align: start;
+        text-overflow: ellipsis;
+      }
+
+      .lastOnline {
+        color: var(--grey-stroke);
+        flex-shrink: 0;
+      }
+    }
+
+    .description {
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: $description-lines;
+      display: -webkit-box;
+      line-clamp: $description-lines;
+      overflow: hidden;
+      text-align: justify;
+      text-overflow: ellipsis;
+    }
+  }
+}

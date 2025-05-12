@@ -1,0 +1,12 @@
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  height: 5rem;
+
+  .right {
+    align-items: center;
+    display: flex;
+    gap: 1.5rem;
+  }
+}

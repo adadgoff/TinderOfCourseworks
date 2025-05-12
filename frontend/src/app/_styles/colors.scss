@@ -1,0 +1,16 @@
+html {
+  --background: #ffffff;
+  --blue: #244a9a;
+  --blue-stroke: #2565e6;
+  // --blue-stroke: #102d69;
+  --grey: #ededed;
+  --grey-stroke: #9d9d9c;
+}
+
+html[data-theme="dark"] {
+  --background: #0d1117;
+  --blue: #db76df;
+  --blue-stroke: #ef9ef1;
+  --grey: #33579e;
+  --grey-stroke: #17eead;
+}

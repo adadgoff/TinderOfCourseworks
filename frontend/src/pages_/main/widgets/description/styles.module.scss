@@ -1,0 +1,27 @@
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  article {
+    text-align: justify;
+  }
+
+  ul {
+    list-style: none;
+
+    li {
+      padding-left: 0.5rem;
+
+      &::marker {
+        content: "🟢";
+      }
+    }
+  }
+
+  .features {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+}

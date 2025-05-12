@@ -1,0 +1,12 @@
+.main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-block-end: 3rem;
+  margin-block-start: 2.5rem;
+
+  > * {
+    width: 50rem;
+  }
+}

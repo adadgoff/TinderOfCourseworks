@@ -1,0 +1,34 @@
+@use "src/app/_styles/variables.scss";
+
+.authCard {
+  align-items: center;
+  background-color: var(--grey);
+  border-radius: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: space-evenly;
+  padding: 0.5rem 1rem 1rem 0.5rem;
+  transition: variables.$transition-time;
+
+  .title {
+    font-size: 3rem;
+  }
+
+  .capabilities {
+    font-size: 2rem;
+  }
+
+  ol {
+    font-size: 1.2rem;
+  }
+
+  .cards {
+    display: flex;
+    gap: 1.1rem;
+
+    button {
+      padding: 0.5rem 1rem;
+    }
+  }
+}

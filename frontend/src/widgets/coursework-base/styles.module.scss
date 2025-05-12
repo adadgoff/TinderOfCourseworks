@@ -1,0 +1,54 @@
+$title-lines: 1;
+$description-lines: 2;
+
+.courseworkBase {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-width: 0;
+
+    .header {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+
+      .title {
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: $title-lines;
+        display: -webkit-box;
+        font-size: 2.5rem;
+        line-clamp: $title-lines;
+        overflow: hidden;
+        text-align: start;
+        text-overflow: ellipsis;
+      }
+
+      .right {
+        align-items: center;
+        display: flex;
+        flex-shrink: 0;
+        justify-content: space-between;
+        width: 10.5rem;
+
+        .lastChange {
+          color: var(--grey-stroke);
+        }
+      }
+    }
+
+    .description {
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: $description-lines;
+      display: -webkit-box;
+      line-clamp: $description-lines;
+      overflow: hidden;
+      text-align: justify;
+      text-overflow: ellipsis;
+    }
+  }
+}

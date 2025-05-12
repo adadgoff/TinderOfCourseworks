@@ -1,0 +1,48 @@
+@use "colors";
+@use "variables";
+
+@import "normalize.css";
+
+html {
+  box-sizing: border-box;
+  background-color: var(--background);
+  color: var(--blue);
+  line-height: 1.5;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+ol,
+p,
+ul {
+  margin: 0;
+}
+
+h1 {
+  font-size: 4rem;
+}
+
+h2 {
+  font-size: 3rem;
+}
+
+h3 {
+  font-size: 2rem;
+}
+
+body {
+  font-size: 1.5rem;
+  min-width: 1024px;
+}

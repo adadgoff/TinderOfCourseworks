@@ -1,0 +1,40 @@
+// TODO: improve width styles.
+
+.loginForm {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 25rem;
+
+  .form {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    // TODO: better to use `width: inherit;`.
+    width: 100%;
+
+    .submitButton {
+      justify-content: center;
+      width: 80%;
+    }
+  }
+
+  .registerRedirect {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+
+    a {
+      width: 80%;
+
+      .registerButton {
+        justify-content: center;
+        width: 100%;
+      }
+    }
+  }
+}

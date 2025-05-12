@@ -1,0 +1,45 @@
+@use "src/app/_styles/variables.scss";
+
+.header {
+  font-size: 2rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .info {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+
+    .title {
+      font-size: 3rem;
+    }
+
+    .clearButton {
+      border-radius: 1rem;
+    }
+  }
+
+  .courseworks {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .option {
+      border-color: transparent;
+      border-radius: 1.5rem;
+      border-style: solid;
+      border-width: 0.2rem;
+      cursor: pointer;
+      padding: 0rem 0.5rem;
+      transition: variables.$transition-time;
+
+      &:hover {
+        background-color: var(--grey);
+      }
+    }
+  }
+}

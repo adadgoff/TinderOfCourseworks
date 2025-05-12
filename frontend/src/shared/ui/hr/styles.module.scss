@@ -1,0 +1,15 @@
+.hr {
+  border-color: var(--blue);
+  border-style: solid;
+  border-width: 0.05rem;
+  margin: 0;
+  width: inherit;
+}
+
+.grey {
+  border-color: var(--grey);
+}
+
+.greyStroke {
+  border-color: var(--grey-stroke);
+}

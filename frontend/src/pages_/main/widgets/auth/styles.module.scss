@@ -1,0 +1,12 @@
+.auth {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  .cards {
+    align-items: center;
+    display: flex;
+    gap: 3rem;
+  }
+}

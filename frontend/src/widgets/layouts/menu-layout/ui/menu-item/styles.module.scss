@@ -1,0 +1,22 @@
+@use "src/app/_styles/variables.scss";
+
+.menuItem {
+  border-radius: 0.75rem;
+  width: 16rem;
+
+  a {
+    align-items: center;
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.5rem;
+  }
+
+  &.currentPage {
+    background-color: var(--grey);
+  }
+
+  &:hover {
+    background-color: var(--grey);
+    transition: variables.$transition-time;
+  }
+}

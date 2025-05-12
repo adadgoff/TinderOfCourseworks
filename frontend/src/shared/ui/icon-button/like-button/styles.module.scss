@@ -1,0 +1,32 @@
+@use "src/app/_styles/variables.scss";
+
+.likeButton {
+  border-radius: 50%;
+  transition: variables.$transition-time;
+
+  svg {
+    transition: fill variables.$transition-time;
+  }
+
+  &:hover:not(:disabled):not(.active) {
+    svg {
+      fill: var(--blue);
+    }
+  }
+
+  &.active {
+    background-color: var(--blue);
+
+    svg {
+      fill: var(--grey);
+    }
+
+    &:hover:not(:disabled) {
+      cursor: not-allowed;
+
+      svg {
+        // fill: var(--grey-stroke);
+      }
+    }
+  }
+}

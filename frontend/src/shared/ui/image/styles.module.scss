@@ -1,0 +1,26 @@
+.img {
+  &.size-s {
+    height: 2rem;
+    width: 2rem;
+  }
+
+  &.size-m {
+    height: 3rem;
+    width: 3rem;
+  }
+
+  &.size-l {
+    height: 7rem;
+    width: 7rem;
+  }
+
+  &.size-xl {
+    height: 9rem;
+    width: 9rem;
+  }
+
+  &.size-xxl {
+    height: 11rem;
+    width: 11rem;
+  }
+}

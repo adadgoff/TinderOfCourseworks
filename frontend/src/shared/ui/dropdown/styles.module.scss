@@ -1,0 +1,62 @@
+@use "src/app/_styles/variables.scss";
+
+$radius: 0.75rem;
+$width: 0.2rem;
+
+.dropDown {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .header {
+    align-items: center;
+    border-color: var(--blue);
+    border-radius: $radius;
+    border-style: solid;
+    border-width: $width;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0.5rem;
+    transition: border-radius variables.$transition-time;
+
+    .arrow {
+      transition: transform variables.$transition-time;
+
+      &.open {
+        transform: rotate(-180deg);
+      }
+    }
+
+    &.open {
+      border-radius: $radius $radius 0 0;
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0.5rem;
+
+    background-color: var(--background);
+    border-color: var(--blue);
+    border-radius: 0 0 $radius $radius;
+    border-style: solid;
+    border-width: $width;
+    max-height: 20rem;
+    overflow-y: auto;
+    position: absolute;
+    top: calc(100% - $width);
+    z-index: variables.$hover-z-index;
+
+    opacity: 0;
+    transition: opacity variables.$transition-time;
+    visibility: hidden;
+
+    &.open {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}

@@ -1,0 +1,33 @@
+.matches {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  .leftMatches {
+    display: flex;
+    font-size: 2rem;
+    justify-content: flex-end;
+  }
+
+  .match {
+    border-color: var(--blue);
+    border-radius: 0.75rem;
+    border-style: solid;
+    border-width: 0.2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hr {
+    border-bottom-width: 0.15rem;
+    border-top-width: 0.1rem;
+    border-style: solid;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    padding: 1rem;
+  }
+}

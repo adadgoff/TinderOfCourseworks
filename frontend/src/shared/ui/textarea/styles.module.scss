@@ -1,0 +1,80 @@
+@use "src/app/_styles/variables.scss";
+
+.textArea {
+  border-color: var(--grey);
+  border-radius: 0.75rem;
+  border-style: solid;
+  border-width: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.6rem;
+  padding: 0.5rem;
+
+  .header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+
+    .left {
+      align-items: center;
+      display: flex;
+      flex-grow: 1;
+      gap: 0.5rem;
+
+      .info {
+        align-items: center;
+        background-color: var(--grey);
+        border-radius: 50%;
+        border-width: 0.15rem;
+        cursor: pointer;
+        display: flex;
+        height: 2rem;
+        justify-content: center;
+        position: relative;
+        width: 2rem;
+
+        &:hover::before {
+          background-color: var(--background);
+          border-radius: 0.75rem;
+          bottom: 100%;
+          box-shadow: 0 0.125rem 0.5rem var(--grey-stroke);
+          color: var(--grey-stroke);
+          content: attr(data-info);
+          font-size: 1.2rem;
+          line-height: 1.2;
+          margin-bottom: 0.5rem;
+          max-width: 20rem;
+          padding: 0.5rem;
+          position: absolute;
+          text-align: justify;
+          width: max-content;
+          z-index: variables.$hover-z-index;
+        }
+      }
+    }
+
+    .right {
+      text-align: end;
+    }
+  }
+
+  textarea {
+    background: none;
+    border: none;
+    color: var(--blue);
+    height: 7rem;
+    line-height: 1.5;
+    outline: none;
+    resize: vertical;
+    text-align: justify;
+    width: 100%;
+
+    &::placeholder {
+      color: var(--grey-stroke);
+    }
+  }
+
+  &:focus-within {
+    border-color: var(--grey-stroke);
+  }
+}

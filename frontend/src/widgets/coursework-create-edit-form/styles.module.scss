@@ -1,0 +1,11 @@
+.courseworkCreateEditForm {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  .iconTitle {
+    align-items: center;
+    display: flex;
+    gap: 2rem;
+  }
+}

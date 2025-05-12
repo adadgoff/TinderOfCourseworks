@@ -1,0 +1,24 @@
+.profileEdit {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    .iconFullname {
+      align-items: center;
+      display: flex;
+      gap: 2rem;
+
+      .fullname {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        gap: 2rem;
+      }
+    }
+  }
+}

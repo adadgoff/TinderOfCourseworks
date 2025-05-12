@@ -1,0 +1,20 @@
+.step {
+  align-items: center;
+  display: flex;
+
+  span {
+    font-size: 7rem;
+  }
+
+  .stepDescription {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+
+    p {
+      font-size: 1.5rem;
+      text-align: center;
+      width: 16rem;
+    }
+  }
+}

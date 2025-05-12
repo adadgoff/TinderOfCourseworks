@@ -1,0 +1,12 @@
+.workFlow {
+  .steps {
+    display: flex;
+    gap: 6rem;
+
+    .column {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+  }
+}
