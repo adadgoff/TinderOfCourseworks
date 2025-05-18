@@ -10,7 +10,7 @@ export class StCwApprove {
     public readonly stCwId: string,
     public readonly stId: string,
     public readonly svId: string,
-    public readonly dateTime: Date,
+    public readonly datetime: Date,
   ) {}
 }
 
@@ -20,6 +20,6 @@ export class SvCwApprove {
     public readonly svCwId: string,
     public readonly stId: string,
     public readonly svId: string,
-    public readonly dateTime: Date,
+    public readonly datetime: Date,
   ) {}
 }

@@ -11,7 +11,7 @@ export const MOCK_STUDENTS: Student[] = [
     patronymic: "Michael",
     city: "New York",
     contact: "s1 contact",
-    birthDay: new Date(2000, 5, 15),
+    birthday: new Date(2000, 5, 15),
     description: "3rd year CS student interested in backend development",
     skills: [MOCK_SKILLS[1], MOCK_SKILLS[4], MOCK_SKILLS[7]],
     lastOnline: new Date(2024, 0),
@@ -25,7 +25,7 @@ export const MOCK_STUDENTS: Student[] = [
     patronymic: "Anne",
     city: "Boston",
     contact: "s2 contact",
-    birthDay: new Date(2001, 2, 28),
+    birthday: new Date(2001, 2, 28),
     description: "Passionate about machine learning and data analysis",
     skills: [MOCK_SKILLS[1], MOCK_SKILLS[5], MOCK_SKILLS[6]],
     iconUrl:
@@ -41,7 +41,7 @@ export const MOCK_STUDENTS: Student[] = [
     patronymic: "Robert",
     city: "Chicago",
     contact: "s3 contact",
-    birthDay: new Date(1999, 11, 5),
+    birthday: new Date(1999, 11, 5),
     description: "Fullstack developer with web application experience",
     skills: [MOCK_SKILLS[0], MOCK_SKILLS[5], MOCK_SKILLS[6]],
     iconUrl:

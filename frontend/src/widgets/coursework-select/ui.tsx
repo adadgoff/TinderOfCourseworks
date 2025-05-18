@@ -58,7 +58,8 @@ export function CourseworkSelect({
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       >
-        <SearchBar />
+        {/* TODO: implement. */}
+        {/* <SearchBar /> */}
         <div className={styles.content}>
           <div className={styles.info}>
             <span className={styles.title}>

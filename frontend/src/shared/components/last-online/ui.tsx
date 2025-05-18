@@ -1,3 +1,5 @@
+"use client";
+
 import styles from "./styles.module.scss";
 import { formatDateTimeByLocale } from "@/shared/lib/date";
 import { GreyP } from "@/shared/ui/p";

@@ -11,7 +11,7 @@ import { compareSkills } from "@/entities/skill/compare";
 import { EmailInput } from "@/shared/components/email-input";
 import { ImgInput } from "@/shared/components/img-input";
 import { CityInput } from "@/shared/components/city-input";
-import { BirthDayInput } from "@/shared/components/birthday-input";
+import { BirthdayInput } from "@/shared/components/birthday-input";
 import { SurnameInput } from "@/shared/components/surname-input";
 import { NameInput } from "@/shared/components/name-input";
 import { PatronymicInput } from "@/shared/components/patronymic-input";
@@ -50,7 +50,7 @@ function getDisabled(user: User, state: State): boolean {
   const stateSortedSkills = [...state.skills].sort(compareSkills);
 
   return (
-    user.birthDay === state.birthDay &&
+    user.birthday === state.birthDay &&
     user.city === state.city &&
     user.contact === state.contact &&
     user.description === state.description &&
@@ -95,7 +95,7 @@ export function ProfileEditForm({ user }: { user: User }) {
   const maxMinConfig = MaxMinConfig[role];
 
   const [state, dispatch] = useReducer(reducer, {
-    birthDay: user.birthDay,
+    birthDay: user.birthday,
     city: user.city,
     contact: user.contact,
     description: user.description,
@@ -107,7 +107,7 @@ export function ProfileEditForm({ user }: { user: User }) {
   });
 
   function handleCancelChanges() {
-    dispatch({ type: "SET_BIRTHDAY", payload: user.birthDay });
+    dispatch({ type: "SET_BIRTHDAY", payload: user.birthday });
     dispatch({ type: "SET_CITY", payload: user.city });
     dispatch({ type: "SET_CONTACT", payload: user.contact });
     dispatch({ type: "SET_DESCRIPTION", payload: user.description });
@@ -121,7 +121,7 @@ export function ProfileEditForm({ user }: { user: User }) {
     // TODO: implement.
   }
 
-  function setBirthDay(birthDay: Date) {
+  function setBirthday(birthDay: Date) {
     dispatch({ type: "SET_BIRTHDAY", payload: birthDay });
   }
   function setCity(city: string) {
@@ -194,12 +194,12 @@ export function ProfileEditForm({ user }: { user: User }) {
           setCity={setCity}
         />
 
-        <BirthDayInput
-          birthDay={state.birthDay}
+        <BirthdayInput
+          birthday={state.birthDay}
           infoText="Your Birthday."
           max={maxMinConfig.maxBirthdayDate}
           min={maxMinConfig.minBirthdayDate}
-          setBirthDay={setBirthDay}
+          setBirthday={setBirthday}
         />
       </div>
 

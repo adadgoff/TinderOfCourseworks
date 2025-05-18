@@ -49,7 +49,8 @@ export function MatchesHistory({ role }: { role: UserRole }) {
   return (
     <section className={styles.matchesHistory}>
       <ActionHeader backUrl={`/${role}/matches`} />
-      <SearchBar />
+      {/* TODO: implement. */}
+      {/* <SearchBar /> */}
       <div className={styles.matches}>
         {matches.map((match) => {
           const coursework = getCourseworkForMatch(match);
@@ -58,7 +59,7 @@ export function MatchesHistory({ role }: { role: UserRole }) {
           return (
             <form key={match.id} className={styles.match}>
               <div className={styles.courseworkProfile}>
-                <DateTime dateTime={match.dateTime} />
+                <DateTime datetime={match.createdAt} />
                 <CourseworkProfilePreview
                   coursework={coursework}
                   user={matchedUser}

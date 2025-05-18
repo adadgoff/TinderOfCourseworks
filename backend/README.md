@@ -1,3 +1,21 @@
+# Backend Microservices
+
+- [ ] Images
+
+- [ ] Auth
+- [ ] Student Profile
+- [ ] Supervisor Profile
+
+- [ ] Student Coursework
+- [ ] Supervisor Coursework
+- [ ] RecSys
+- [ ] Matches
+- [ ] Approves
+
+# Code Rules
+
+1. All in the singular.
+
 # Technology Stack
 
 ## Core
@@ -47,6 +65,7 @@
 2. [gitignore.io](https://www.toptal.com/developers/gitignore)
 
 # TODO
+
 - [ ] implement exception messages
 - [ ] setup linters
 - [ ] Перейти на uv вместо poetry

@@ -1,0 +1,5 @@
+# TODO: implement.
+
+SKILL_MIN_NAME_LENGTH = 1
+
+SKILL_MAX_NAME_LENGTH = 30

@@ -10,7 +10,8 @@ export function Courseworks({
 }) {
   return (
     <article className={styles.courseworks}>
-      <SearchBar />
+      {/* TODO: implement. */}
+      {/* <SearchBar /> */}
       {courseworks.map((coursework) => (
         <CourseworkPreview coursework={coursework} key={coursework.id} />
       ))}

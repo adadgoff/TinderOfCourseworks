@@ -57,20 +57,6 @@ src
 - [ ] Login/Register Pages: use Special Inputs for RepeatPassword, NameInput, etc.
 - [ ] Coursework Create/Edit Pages: save/cancel changes disabled if no changes
 
-### Backend Microservices
-
-- [ ] Images
-
-- [ ] Auth
-- [ ] Student Profile
-- [ ] Supervisor Profile
-
-- [ ] Student Coursework
-- [ ] Supervisor Coursework
-- [ ] RecSys
-- [ ] Matches
-- [ ] Approves
-
 ## Questions to reviewer
 
 - [ ] Which way better to implement `vr`?
@@ -88,21 +74,5 @@ src
 - [ ] Improve recommender system based on user story: UserKNN / ItemKNN instead of SQL queries
 - [ ] Add filters in recommender system
 - [ ] Add more bio info in profiles (Contacts, Education/Teaching/Working/Research and Publications)
-
-## Pages
-
-| page/role         | students | supervisor |
-| ----------------- | -------- | ---------- |
-| courseworks       | ✅       | 🔲         |
-| coursework-create | ✅       | 🔲         |
-| coursework-edit   | ✅       | 🔲         |
-| coursework-view   | ✅       | 🔲         |
-| explore           | 🔲       | 🔲         |
-| explore-history   | 🔲       | 🔲         |
-| matches           | 🔲       | 🔲         |
-| matches-history   | 🔲       | 🔲         |
-| approves          | 🔲       | 🔲         |
-| approves-history  | 🔲       | 🔲         |
-| profile           | 🔲       | 🔲         |
-| profile-view      | ✅       | 🔲         |
-| profile-edit      | ✅       | 🔲         |
+- [ ] Queries Optimizations: Pagination
+- [ ] Add delete ability

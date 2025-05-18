@@ -2,7 +2,7 @@ import styles from "./styles.module.scss";
 import { Student } from "@/entities/student";
 import { FullNameInput } from "@/shared/components/full-name-input";
 import { CityInput } from "@/shared/components/city-input";
-import { BirthDayInput } from "@/shared/components/birthday-input";
+import { BirthdayInput } from "@/shared/components/birthday-input";
 import { User, UserRole } from "@/entities/user/types";
 import { LastOnline } from "@/shared/components/last-online";
 import { DescriptionTextArea } from "@/shared/components/description-textarea";
@@ -34,10 +34,10 @@ export function ProfileView({ className, user }: ProfileViewProps) {
             patronymic={user.patronymic}
             surname={user.surname}
           />
-          <div className={styles.cityBirthDay}>
+          <div className={styles.cityBirthday}>
             <CityInput city={user.city} infoText={`City of ${role}.`} />
-            <BirthDayInput
-              birthDay={user.birthDay}
+            <BirthdayInput
+              birthday={user.birthday}
               infoText={`Birthday of ${role}.`}
             />
           </div>

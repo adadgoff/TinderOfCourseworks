@@ -9,8 +9,8 @@ export function FooterHeaderLayout({ children }: { children: ReactNode }) {
       <Header />
       <Hr />
       {children}
-      <Hr />
-      <Footer />
+      {/* <Hr />
+      <Footer /> */}
     </>
   );
 }

@@ -23,7 +23,7 @@ interface StudentProps extends UserBaseProps {
   lastOnline?: Date;
   city: string;
   contact: string;
-  birthDay: Date;
+  birthday: Date;
   description: string;
   skills: Skill[];
 }
@@ -33,7 +33,7 @@ export class Student extends UserBase {
   public lastOnline: Date;
   public city: string;
   public contact: string;
-  public birthDay: Date;
+  public birthday: Date;
   public description: string;
   public skills: Skill[];
 
@@ -48,7 +48,7 @@ export class Student extends UserBase {
     lastOnline = new Date(),
     city,
     contact,
-    birthDay,
+    birthday,
     description,
     skills,
   }: StudentProps) {
@@ -58,7 +58,7 @@ export class Student extends UserBase {
     this.lastOnline = lastOnline;
     this.city = city;
     this.contact = contact;
-    this.birthDay = birthDay;
+    this.birthday = birthday;
     this.description = description;
     this.skills = skills;
 
@@ -68,7 +68,7 @@ export class Student extends UserBase {
   private validateStudent() {
     const errors: string[] = [];
 
-    errors.push(...this.validateBirthDay());
+    errors.push(...this.validateBirthday());
     errors.push(...this.validateCity());
     errors.push(...this.validateContact());
     errors.push(...this.validateDescription());
@@ -81,12 +81,12 @@ export class Student extends UserBase {
     }
   }
 
-  private validateBirthDay(): string[] {
+  private validateBirthday(): string[] {
     const errors: string[] = [];
 
     if (
       !isDateBetween(
-        this.birthDay,
+        this.birthday,
         STUDENT_MIN_BIRTHDAY_DATE,
         STUDENT_MAX_BIRTHDAY_DATE,
       )

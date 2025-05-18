@@ -23,7 +23,8 @@ export function Approves({ role }: { role: UserRole }) {
 
   return (
     <section className={styles.approvesContainer}>
-      <SearchBar />
+      {/* TODO: implement. */}
+      {/* <SearchBar /> */}
       <div className={styles.approves}>
         {approves.map((approve, index) => {
           const coursework: Coursework = MOCK_COURSEWORKS[0];
@@ -36,7 +37,7 @@ export function Approves({ role }: { role: UserRole }) {
               key={index} // TODO: key={`${coursework.id}_${courseworkOwner.id}`}
             >
               <div className={styles.courseworkProfile}>
-                <DateTime dateTime={approve.dateTime} />
+                <DateTime datetime={approve.datetime} />
                 <CourseworkProfilePreview
                   coursework={coursework}
                   user={courseworkOwner}

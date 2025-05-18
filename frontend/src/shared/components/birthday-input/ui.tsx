@@ -1,17 +1,17 @@
 import { InputDate } from "@/shared/ui/input-date";
 
-export function BirthDayInput({
-  birthDay,
+export function BirthdayInput({
+  birthday,
   infoText,
   max,
   min,
-  setBirthDay,
+  setBirthday,
 }: {
-  birthDay: Date;
+  birthday: Date;
   infoText: string;
   max?: Date;
   min?: Date;
-  setBirthDay?: (birthDay: Date) => void;
+  setBirthday?: (birthday: Date) => void;
 }) {
   return (
     <InputDate
@@ -20,8 +20,8 @@ export function BirthDayInput({
       inputDateName="Birthday"
       max={max}
       min={min}
-      setValue={setBirthDay}
-      value={birthDay}
+      setValue={setBirthday}
+      value={birthday}
     />
   );
 }

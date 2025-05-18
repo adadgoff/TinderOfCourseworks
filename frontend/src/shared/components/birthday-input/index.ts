@@ -1,3 +1,3 @@
-import { BirthDayInput } from "./ui";
+import { BirthdayInput } from "./ui";
 
-export { BirthDayInput };
+export { BirthdayInput };

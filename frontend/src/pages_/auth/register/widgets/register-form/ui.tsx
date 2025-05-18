@@ -14,6 +14,7 @@ import { EmailInput } from "@/shared/components/email-input";
 import { PasswordInput } from "@/shared/components/password-input";
 import { SurnameInput } from "@/shared/components/surname-input";
 import { PatronymicInput } from "@/shared/components/patronymic-input";
+import { NameInput } from "@/shared/components/name-input";
 
 type State = {
   role: UserRole;
@@ -110,11 +111,12 @@ export function RegisterForm() {
           placeholder="password again"
           setPassword={setPasswordRepeat}
         />
-        <SurnameInput surname={state.surname} setSurname={setSurname} />
+        {/* <SurnameInput surname={state.surname} setSurname={setSurname} />
+        <NameInput name={state.name} setName={setName} />
         <PatronymicInput
           patronymic={state.patronymic}
           setPatronymic={setPatronymic}
-        />
+        /> */}
 
         <Button className={styles.submitButton} decor="accent">
           create account
