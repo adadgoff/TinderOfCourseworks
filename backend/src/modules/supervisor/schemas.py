@@ -13,6 +13,8 @@ class SupervisorBaseSchema(SupervisorBase):
         populate_by_name=True,
     )
 
+    id: UUID
+
 
 class SupervisorCreate(SupervisorBaseSchema):
     id: UUID

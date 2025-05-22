@@ -2,8 +2,8 @@
 
 import styles from "./styles.module.scss";
 import { ToggleButtonGroup } from "@/shared/ui/toggle-button-group";
-import { useSearchParams } from "next/navigation";
-import { useReducer } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { FormEvent, useReducer } from "react";
 import { Button } from "@/shared/ui/button";
 import { GreyHr } from "@/shared/ui/hr";
 import { GreyP } from "@/shared/ui/p";
@@ -15,6 +15,7 @@ import { PasswordInput } from "@/shared/components/password-input";
 import { SurnameInput } from "@/shared/components/surname-input";
 import { PatronymicInput } from "@/shared/components/patronymic-input";
 import { NameInput } from "@/shared/components/name-input";
+import { register } from "@/pages_/auth/api/auth";
 
 type State = {
   role: UserRole;
@@ -57,6 +58,7 @@ function reducer(state: State, action: Action): State {
 }
 
 export function RegisterForm() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const fromParam = searchParams.get("from");
 
@@ -71,6 +73,17 @@ export function RegisterForm() {
     name: "",
     patronymic: "",
   });
+
+  async function submitRegister(event: FormEvent) {
+    event.preventDefault();
+    await register({
+      role: state.role,
+      email: state.email,
+      password: state.password,
+    });
+
+    router.push(`/login?from=${state.role}`);
+  }
 
   function setRole(role: string) {
     dispatch({ type: "SET_ROLE", payload: role as UserRole });
@@ -96,7 +109,7 @@ export function RegisterForm() {
 
   return (
     <section className={styles.registerForm}>
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={submitRegister}>
         <ToggleButtonGroup
           currentOption={state.role}
           options={USER_ROLES as [string, string]}
@@ -118,7 +131,14 @@ export function RegisterForm() {
           setPatronymic={setPatronymic}
         /> */}
 
-        <Button className={styles.submitButton} decor="accent">
+        <Button
+          className={styles.submitButton}
+          decor="accent"
+          disabled={
+            state.password === "" || state.password !== state.passwordRepeat
+          }
+          type="submit"
+        >
           create account
         </Button>
       </form>

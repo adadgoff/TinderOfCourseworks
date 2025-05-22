@@ -7,11 +7,11 @@ export function BirthdayInput({
   min,
   setBirthday,
 }: {
-  birthday: Date;
+  birthday: string;
   infoText: string;
-  max?: Date;
-  min?: Date;
-  setBirthday?: (birthday: Date) => void;
+  max?: string;
+  min?: string;
+  setBirthday?: (birthday: string) => void;
 }) {
   return (
     <InputDate

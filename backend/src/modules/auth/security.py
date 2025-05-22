@@ -3,6 +3,8 @@ from typing import Any
 
 import jwt
 
+from pydantic import ConfigDict
+from pydantic.alias_generators import to_camel
 from sqlmodel import SQLModel
 from passlib.context import CryptContext
 
@@ -37,3 +39,4 @@ def create_access_token(subject: str | Any, expires_delta: timedelta) -> str:
 
 class Token(SQLModel):
     access_token: str
+    token_type: str = "bearer"

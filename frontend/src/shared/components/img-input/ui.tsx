@@ -41,7 +41,8 @@ export function ImgInput({
       <input
         accept="image/*"
         className={styles.fileInput}
-        disabled={disabled}
+        // disabled={disabled}
+        disabled={true}
         onChange={handleFileChange}
         ref={fileInputRef}
         type="file"

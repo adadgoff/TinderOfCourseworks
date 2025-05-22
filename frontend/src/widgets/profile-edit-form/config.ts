@@ -25,13 +25,13 @@ import {
 import { UserRole } from "@/entities/user/types";
 
 interface MaxMinConfigProps {
-  maxBirthdayDate: Date;
+  maxBirthdayDate: string;
   maxCityLength: number;
   maxContactLength: number;
   maxDescriptionLength: number;
   maxSkillsCount: number;
 
-  minBirthdayDate: Date;
+  minBirthdayDate: string;
   minCityLength: number;
   minContactLength: number;
   minDescriptionLength: number;

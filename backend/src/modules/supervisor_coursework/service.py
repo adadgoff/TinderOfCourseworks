@@ -70,12 +70,6 @@ class SupervisorCourseworkService:
             session=session,
         )
 
-        if len(courseworks) == 0:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Supervisor Courseworks not found",
-            )
-
         return courseworks
 
     async def update_coursework(

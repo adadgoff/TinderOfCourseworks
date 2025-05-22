@@ -49,12 +49,6 @@ class RecSysService:
                 recommended_st = allowed_st
                 max_common_skills_cnt = common_skills_cnt
 
-        if recommended_st is None:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Recommended `St` not found",
-            )
-
         return recommended_st
 
     async def recommend_st_cw_for_sv(
@@ -85,12 +79,6 @@ class RecSysService:
             if common_skills_cnt > max_common_skills_cnt:
                 recommended_st_cw = allowed_st_cw
                 max_common_skills_cnt = common_skills_cnt
-
-        if recommended_st_cw is None:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Recommended `St Cw` not found",
-            )
 
         return recommended_st_cw
 
@@ -123,12 +111,6 @@ class RecSysService:
                 recommended_sv = allowed_sv
                 max_common_skills_cnt = common_skills_cnt
 
-        if recommended_sv is None:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Recommended `Sv` not found",
-            )
-
         return recommended_sv
 
     async def recommend_sv_cw_for_st(
@@ -159,12 +141,6 @@ class RecSysService:
             if common_skills_cnt > max_common_skills_cnt:
                 recommended_sv_cw = allowed_st_cw
                 max_common_skills_cnt = common_skills_cnt
-
-        if recommended_sv_cw is None:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Recommended `Sv Cw` not found",
-            )
 
         return recommended_sv_cw
 

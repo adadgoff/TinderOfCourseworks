@@ -40,68 +40,62 @@ from src.modules.student.consts import (
 
 class StudentBase(SQLModel):
     email: EmailStr | None = Field(
-        default=None,
+        # default=None,
         min_length=USER_MIN_EMAIL_LENGTH,
         max_length=USER_MAX_EMAIL_LENGTH,
         unique=True,
     )
     surname: str | None = Field(
-        default=None,
+        default="pls fill surname",
         min_length=USER_MIN_SURNAME_LENGTH,
         max_length=USER_MAX_SURNAME_LENGTH,
-        nullable=True,
     )
     name: str | None = Field(
-        default=None,
+        default="pls fill name",
         min_length=USER_MIN_NAME_LENGTH,
         max_length=USER_MAX_NAME_LENGTH,
-        nullable=True,
     )
     patronymic: str | None = Field(
-        default=None,
+        default="pls fill patronymic",
         min_length=USER_MIN_PATRONYMIC_LENGTH,
         max_length=USER_MAX_PATRONYMIC_LENGTH,
-        nullable=True,
     )
     icon_url: HttpUrl | None = Field(
         default=STUDENT_ICON_URL_DEFAULT,
         sa_type=HttpUrlType,
-        # nullable=True,
     )
     birthday: date | None = Field(
-        default=None,
+        default=date(
+            day=1,
+            month=1,
+            year=2000,
+        ),
         ge=STUDENT_MIN_BIRTHDAY_DATE,
         le=STUDENT_MAX_BIRTHDAY_DATE,
-        nullable=True,
     )
     city: str | None = Field(
-        default=None,
+        default="pls fill city",
         min_length=STUDENT_MIN_CITY_LENGTH,
         max_length=STUDENT_MAX_CITY_LENGTH,
-        nullable=True,
     )
     contact: str | None = Field(
-        default=None,
+        default="pls fill contact",
         min_length=STUDENT_MIN_CONTACT_LENGTH,
         max_length=STUDENT_MAX_CONTACT_LENGTH,
-        nullable=True,
     )
     description: str | None = Field(
-        default=None,
+        default="pls fill description",
         min_length=STUDENT_MIN_DESCRIPTION_LENGTH,
         max_length=STUDENT_MAX_DESCRIPTION_LENGTH,
-        nullable=True,
     )
     last_online: datetime | None = Field(
         default_factory=lambda: datetime.now(timezone.utc),
         sa_type=DateTime(timezone=True),
-        # nullable=True,
     )
     skills: list[str] | None = Field(
         default_factory=list,
         min_length=STUDENT_MIN_SKILLS_COUNT - STUDENT_MIN_SKILLS_COUNT,
         max_length=STUDENT_MAX_SKILLS_COUNT,
-        # nullable=True,
         sa_type=JSON,
     )
 

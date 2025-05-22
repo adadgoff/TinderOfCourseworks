@@ -26,20 +26,20 @@ app = FastAPI(
 )
 
 
-app.include_router(auth_router)
-app.include_router(student_router)
-app.include_router(supervisor_router)
-app.include_router(image_router)
-app.include_router(student_coursework_router)
-app.include_router(supervisor_coursework_router)
-app.include_router(rec_sys_router)
+app.include_router(auth_router, prefix=settings.API_V1_STR)
+app.include_router(student_router, prefix=settings.API_V1_STR)
+app.include_router(supervisor_router, prefix=settings.API_V1_STR)
+# app.include_router(image_router, prefix=settings.API_V1_STR)
+app.include_router(student_coursework_router, prefix=settings.API_V1_STR)
+app.include_router(supervisor_coursework_router, prefix=settings.API_V1_STR)
+app.include_router(rec_sys_router, prefix=settings.API_V1_STR)
 
 
-app.mount(
-    path=f"/{STATIC_PATH}",
-    app=StaticFiles(directory=STATIC_PATH),
-    name="Temporary File Storage",
-)
+# app.mount(
+#     path=f"/{STATIC_PATH}",
+#     app=StaticFiles(directory=STATIC_PATH),
+#     name="Temporary File Storage",
+# )
 
 
 if settings.all_cors_origins:
@@ -53,12 +53,16 @@ if settings.all_cors_origins:
 
 
 if __name__ == "__main__":
-    from src.core.db import init_db, drop_db
+    # Uncomment for local testing.
+    # from src.core.db import init_db, drop_db
 
-    async def main():
-        await drop_db()
-        await init_db()
+    # async def main():
+    #     await drop_db()
 
-    import asyncio
+    #     await init_db()
 
-    asyncio.run(main())
+    # import asyncio
+
+    # asyncio.run(main())
+
+    pass

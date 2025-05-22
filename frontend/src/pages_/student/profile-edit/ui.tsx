@@ -1,17 +1,47 @@
-"use client"; // TODO: for future work with API.
+"use client";
 
-import { Student } from "@/entities/student";
 import { ProfileEditForm } from "@/widgets/profile-edit-form";
-import { MOCK_STUDENTS } from "../../../../mocks/students";
 import { InnerHeader } from "@/widgets/header-inner";
+import { useEffect, useState } from "react";
+import { User } from "@/entities/types/user";
+import Cookies from "js-cookie";
+import { UserRole } from "@/entities/user/types";
+import { notFound } from "next/navigation";
+import { getPersonalRoleUser } from "@/pages_/api/users";
 
 export function StudentProfileEditPage() {
-  const student: Student = MOCK_STUDENTS[0];
+  const studentToken = Cookies.get("studentToken");
+  const [student, setStudent] = useState<User | null>(null);
+
+  if (studentToken === undefined) {
+    return notFound();
+  }
+
+  useEffect(
+    function () {
+      const fetchStudent = async function () {
+        const student = await getPersonalRoleUser({
+          role: UserRole.Student,
+          token: studentToken,
+        });
+        setStudent(student);
+      };
+
+      fetchStudent();
+    },
+    [studentToken],
+  );
 
   return (
     <>
       <InnerHeader title="Edit Profile" />
-      <ProfileEditForm user={student} />
+      {student && (
+        <ProfileEditForm
+          role={UserRole.Student}
+          token={studentToken}
+          user={student}
+        />
+      )}
     </>
   );
 }

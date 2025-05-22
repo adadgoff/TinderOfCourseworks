@@ -6,12 +6,14 @@ import { GreyHr } from "@/shared/ui/hr";
 import { GreyP } from "@/shared/ui/p";
 import { ToggleButtonGroup } from "@/shared/ui/toggle-button-group";
 import Link from "next/link";
-import { useReducer } from "react";
-import { useSearchParams } from "next/navigation";
+import { FormEvent, useReducer } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { UserRole } from "@/entities/user/types";
 import { USER_ROLES } from "@/entities/user/consts";
 import { PasswordInput } from "@/shared/components/password-input";
 import { EmailInput } from "@/shared/components/email-input";
+import { login } from "@/pages_/auth/api/auth";
+import Cookies from "js-cookie";
 
 type State = {
   role: UserRole;
@@ -38,6 +40,7 @@ function reducer(state: State, action: Action): State {
 }
 
 export function LoginForm() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const fromParam = searchParams.get("from");
 
@@ -48,6 +51,17 @@ export function LoginForm() {
     email: "",
     password: "",
   });
+
+  async function submitLogin(event: FormEvent) {
+    event.preventDefault();
+    const response = await login({
+      role: state.role,
+      email: state.email,
+      password: state.password,
+    });
+    Cookies.set(`${state.role}Token`, response.accessToken);
+    router.push(`/${state.role}/courseworks`);
+  }
 
   function setRole(role: string) {
     dispatch({ type: "SET_ROLE", payload: role as UserRole });
@@ -61,7 +75,7 @@ export function LoginForm() {
 
   return (
     <section className={styles.loginForm}>
-      <form className={styles.form}>
+      <form className={styles.form} method="POST" onSubmit={submitLogin}>
         <ToggleButtonGroup
           currentOption={state.role}
           options={USER_ROLES as [string, string]}
@@ -70,7 +84,7 @@ export function LoginForm() {
         <EmailInput email={state.email} setEmail={setEmail} />
         <PasswordInput password={state.password} setPassword={setPassword} />
 
-        <Button className={styles.submitButton} decor="accent">
+        <Button className={styles.submitButton} decor="accent" type="submit">
           login
         </Button>
       </form>
@@ -78,7 +92,7 @@ export function LoginForm() {
       <GreyHr />
 
       <div className={styles.registerRedirect}>
-        <GreyP>Don't have an account?</GreyP>
+        <GreyP>Do not have an account?</GreyP>
         <Link href={{ pathname: "/register", query: { from: state.role } }}>
           <Button className={styles.registerButton} decor="grey">
             create account

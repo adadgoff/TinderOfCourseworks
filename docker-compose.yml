@@ -20,5 +20,56 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+        restart: true
+    env_file:
+      - .env
+    environment:
+      - ENVIRONMENT=${ENVIRONMENT?Variable not set}
+      - PROJECT_NAME=${PROJECT_NAME?Variable not set}
+      - BACKEND_PORT=${BACKEND_PORT?Variable not set}
+      - BACKEND_HOST=${BACKEND_HOST?Variable not set}
+      - BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS?Variable not set}
+      - SECRET_KEY=${SECRET_KEY?Variable not set}
+      - POSTGRES_DB=${POSTGRES_DB?Variable not set}
+      - POSTGRES_PORT=${POSTGRES_PORT?Variable not set}
+      - POSTGRES_SERVER=${POSTGRES_SERVER?Variable not set}
+      - POSTGRES_USER=${POSTGRES_USER?Variable not set}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?Variable not set}
+      - FRONTEND_HOST=${FRONTEND_HOST?Variable not set}
+    image: "${DOCKER_IMAGE_BACKEND?Variable not set}:${TAG-latest}"
+    networks:
+      - default
+    ports:
+      - ${BACKEND_PORT}:${BACKEND_PORT}
+    restart: always
+
+  frontend:
+    build:
+      args:
+        - NEXT_PUBLIC_BACKEND_HOST=${NEXT_PUBLIC_BACKEND_HOST}
+      context: ./frontend
+    container_name: frontend
+    depends_on:
+      backend:
+        condition: service_started
+    env_file:
+      - .env
+    environment:
+      - BACKEND_HOST=${BACKEND_HOST?Variable not set}
+      - NEXT_PUBLIC_BACKEND_HOST=${NEXT_PUBLIC_BACKEND_HOST?Variable not set}
+    image: "${DOCKER_IMAGE_FRONTEND?Variable not set}:${TAG-latest}"
+    networks:
+      - default
+    ports:
+      - ${FRONTEND_PORT}:${FRONTEND_PORT}
+    restart: always
+
 volumes:
   postgres-data:

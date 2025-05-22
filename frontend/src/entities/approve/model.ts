@@ -6,7 +6,6 @@
 
 export class StCwApprove {
   constructor(
-    public readonly id: string,
     public readonly stCwId: string,
     public readonly stId: string,
     public readonly svId: string,
@@ -16,7 +15,6 @@ export class StCwApprove {
 
 export class SvCwApprove {
   constructor(
-    public readonly id: string,
     public readonly svCwId: string,
     public readonly stId: string,
     public readonly svId: string,

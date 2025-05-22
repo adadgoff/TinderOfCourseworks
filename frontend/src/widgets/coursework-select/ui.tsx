@@ -1,6 +1,6 @@
 "use client";
 
-import { Coursework } from "@/entities/coursework";
+import { Coursework } from "@/entities/types/coursework";
 import styles from "./styles.module.scss";
 import { SearchBar } from "@/shared/ui/search-bar";
 import { useEffect, useRef, useState } from "react";

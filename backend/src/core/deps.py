@@ -4,11 +4,12 @@ from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from sqlmodel.ext.asyncio.session import AsyncSession
 
+from src.core.config import settings
 from src.core.db import engine
 
 
 reusable_oauth2 = OAuth2PasswordBearer(
-    tokenUrl="login/supervisor",
+    tokenUrl=f"{settings.API_V1_STR}/login/supervisor",
 )
 
 

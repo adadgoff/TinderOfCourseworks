@@ -1,13 +1,10 @@
 "use client";
 
-import { Skill } from "@/entities/skill";
 import styles from "./styles.module.scss";
-import { Student } from "@/entities/student";
 import { UserRole } from "@/entities/user/types";
 import { ActionHeader } from "@/widgets/header-action";
 import { GreyHr } from "@/shared/ui/hr";
-import { useReducer } from "react";
-import { compareSkills } from "@/entities/skill/compare";
+import { FormEvent, useReducer } from "react";
 import { EmailInput } from "@/shared/components/email-input";
 import { ImgInput } from "@/shared/components/img-input";
 import { CityInput } from "@/shared/components/city-input";
@@ -18,11 +15,13 @@ import { PatronymicInput } from "@/shared/components/patronymic-input";
 import { DescriptionTextArea } from "@/shared/components/description-textarea";
 import { MaxMinConfig } from "./config";
 import { SkillsInput } from "@/shared/components/skills-input";
-import { User } from "@/entities/user/types";
+import { User } from "@/entities/types/user";
 import { ContactInput } from "@/shared/components/contact-input";
+import { editRoleUser } from "@/pages_/api/users";
+import { useRouter } from "next/navigation";
 
 type State = {
-  birthDay: Date;
+  birthDay: string;
   city: string;
   contact: string;
   description: string;
@@ -30,24 +29,24 @@ type State = {
   iconUrl: string;
   name: string;
   patronymic: string;
-  skills: Skill[];
+  skills: string[];
   surname: string;
 };
 
 type Action =
-  | { type: "SET_BIRTHDAY"; payload: Date }
+  | { type: "SET_BIRTHDAY"; payload: string }
   | { type: "SET_CITY"; payload: string }
   | { type: "SET_CONTACT"; payload: string }
   | { type: "SET_DESCRIPTION"; payload: string }
   | { type: "SET_ICON_URL"; payload: string }
   | { type: "SET_NAME"; payload: string }
   | { type: "SET_PATRONYMIC"; payload: string }
-  | { type: "SET_SKILLS"; payload: Skill[] }
+  | { type: "SET_SKILLS"; payload: string[] }
   | { type: "SET_SURNAME"; payload: string };
 
 function getDisabled(user: User, state: State): boolean {
-  const userSortedSkills = [...user.skills].sort(compareSkills);
-  const stateSortedSkills = [...state.skills].sort(compareSkills);
+  const userSortedSkills = [...user.skills].sort();
+  const stateSortedSkills = [...state.skills].sort();
 
   return (
     user.birthday === state.birthDay &&
@@ -58,9 +57,7 @@ function getDisabled(user: User, state: State): boolean {
     user.patronymic === state.patronymic &&
     user.skills.length === state.skills.length &&
     user.surname === state.surname &&
-    userSortedSkills.every(
-      (skill, index) => skill.name === stateSortedSkills[index].name,
-    )
+    userSortedSkills.every((skill, index) => skill === stateSortedSkills[index])
   );
 }
 
@@ -89,11 +86,17 @@ function reducer(state: State, action: Action): State {
   }
 }
 
-export function ProfileEditForm({ user }: { user: User }) {
-  const role: UserRole =
-    user instanceof Student ? UserRole.Student : UserRole.Supervisor;
+export function ProfileEditForm({
+  role,
+  token,
+  user,
+}: {
+  role: UserRole;
+  token: string;
+  user: User;
+}) {
+  const router = useRouter();
   const maxMinConfig = MaxMinConfig[role];
-
   const [state, dispatch] = useReducer(reducer, {
     birthDay: user.birthday,
     city: user.city,
@@ -117,11 +120,31 @@ export function ProfileEditForm({ user }: { user: User }) {
     dispatch({ type: "SET_SKILLS", payload: user.skills });
     dispatch({ type: "SET_SURNAME", payload: user.surname });
   }
-  function handleSaveChanges() {
-    // TODO: implement.
+  async function handleSaveChanges(event: FormEvent) {
+    event.preventDefault();
+
+    await editRoleUser({
+      user: {
+        id: user.id,
+        email: user.email,
+        surname: state.surname,
+        name: state.name,
+        patronymic: state.patronymic,
+        iconUrl: state.iconUrl,
+        city: state.city,
+        contact: state.contact,
+        birthday: state.birthDay,
+        description: state.description,
+        skills: state.skills,
+      },
+      role: role,
+      token: token,
+    });
+
+    router.push(`/${role}/profile`);
   }
 
-  function setBirthday(birthDay: Date) {
+  function setBirthday(birthDay: string) {
     dispatch({ type: "SET_BIRTHDAY", payload: birthDay });
   }
   function setCity(city: string) {
@@ -146,7 +169,7 @@ export function ProfileEditForm({ user }: { user: User }) {
   function setPatronymic(patronymic: string) {
     dispatch({ type: "SET_PATRONYMIC", payload: patronymic });
   }
-  function setSkills(skills: Skill[]) {
+  function setSkills(skills: string[]) {
     dispatch({ type: "SET_SKILLS", payload: skills });
   }
   function setSurname(surname: string) {

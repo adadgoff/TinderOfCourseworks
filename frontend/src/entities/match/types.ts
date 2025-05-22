@@ -1,8 +1,8 @@
-import { St2SvCwMatch, Sv2StCwMatch } from "./model";
+import { St2SvCwMatch, Sv2StCwMatch } from ".";
 
 export enum MatchType {
-  SKIP = 0,
-  LIKE = 1,
+  Skip = "skip",
+  Like = "like",
 }
 
 export type Match = St2SvCwMatch | Sv2StCwMatch;

@@ -1,10 +1,36 @@
-import { Coursework } from "@/entities/coursework";
+"use client";
+
+import { Coursework } from "@/entities/types/coursework";
 import { Courseworks } from "@/widgets/courseworks";
-import { MOCK_COURSEWORKS } from "../../../../mocks/courseworks";
 import { InnerHeader } from "@/widgets/header-inner";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import { notFound } from "next/navigation";
+import { getPersonalCourseworks } from "@/pages_/api/courseworks";
+import { UserRole } from "@/entities/user/types";
 
 export function StudentCourseworksPage() {
-  const courseworks: Coursework[] = MOCK_COURSEWORKS;
+  const [courseworks, setCourseworks] = useState<Coursework[]>([]);
+  const studentToken = Cookies.get("studentToken");
+
+  if (studentToken === undefined) {
+    return notFound();
+  }
+
+  useEffect(
+    function () {
+      const fetchCourseworks = async function () {
+        const courseworks = await getPersonalCourseworks({
+          role: UserRole.Student,
+          token: studentToken,
+        });
+        setCourseworks(courseworks);
+      };
+
+      fetchCourseworks();
+    },
+    [studentToken],
+  );
 
   return (
     <>
@@ -16,7 +42,7 @@ export function StudentCourseworksPage() {
         openInNewTab={true}
         title="Courseworks"
       />
-      <Courseworks courseworks={courseworks} />
+      <Courseworks courseworks={courseworks} role={UserRole.Student} />
     </>
   );
 }

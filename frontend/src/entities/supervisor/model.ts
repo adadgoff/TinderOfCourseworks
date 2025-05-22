@@ -1,5 +1,4 @@
 import { isLengthBetween } from "@/shared/lib/common";
-import { Skill } from "../skill";
 import { UserBase } from "../user";
 import { UserBaseProps } from "../user/types";
 import {
@@ -20,22 +19,22 @@ import { formatDateByLocale, isDateBetween } from "@/shared/lib/date";
 
 interface SupervisorProps extends UserBaseProps {
   iconUrl?: string;
-  lastOnline?: Date;
+  lastOnline?: string;
   city: string;
   contact: string;
-  birthday: Date;
+  birthday: string;
   description: string;
-  skills: Skill[];
+  skills: string[];
 }
 
 export class Supervisor extends UserBase {
   public iconUrl: string;
-  public lastOnline: Date;
+  public lastOnline?: string;
   public city: string;
   public contact: string;
-  public birthday: Date;
+  public birthday: string;
   public description: string;
-  public skills: Skill[];
+  public skills: string[];
 
   constructor({
     id,
@@ -45,7 +44,7 @@ export class Supervisor extends UserBase {
     name,
     patronymic,
     iconUrl = SUPERVISOR_ICON_URL_DEFAULT,
-    lastOnline = new Date(),
+    lastOnline,
     city,
     contact,
     birthday,
@@ -91,9 +90,12 @@ export class Supervisor extends UserBase {
         SUPERVISOR_MAX_BIRTHDAY_DATE,
       )
     ) {
-      errors.push(
-        `Birthday must be between ${formatDateByLocale(SUPERVISOR_MIN_BIRTHDAY_DATE)} and ${formatDateByLocale(SUPERVISOR_MAX_BIRTHDAY_DATE)} dates`,
-      );
+      errors
+        .push
+        // `Birthday must be between ${formatDateByLocale(
+        //   SUPERVISOR_MIN_BIRTHDAY_DATE,
+        // )} and ${formatDateByLocale(SUPERVISOR_MAX_BIRTHDAY_DATE)} dates`,
+        ();
     }
 
     return errors;

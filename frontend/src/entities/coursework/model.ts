@@ -1,5 +1,4 @@
 import { isLengthBetween } from "@/shared/lib/common";
-import { Skill } from "../skill";
 import { CourseworkValidationError } from "./errors";
 import {
   COURSEWORK_MAX_DESCRIPTION_LENGTH,
@@ -13,13 +12,13 @@ import {
 import { CourseworkStatus } from "./types";
 
 interface CourseworkProps {
-  id?: string; // if creating new coursework.
+  id?: string; // if creating new coursework `id` is `undefined`.
   title: string;
   iconUrl?: string;
   description: string;
   lastChange?: Date;
   status?: CourseworkStatus;
-  skills: Skill[];
+  skills: string[];
 }
 
 export class Coursework {
@@ -29,7 +28,7 @@ export class Coursework {
   public description: string;
   public lastChange: Date;
   public status: CourseworkStatus;
-  public skills: Skill[];
+  public skills: string[];
 
   constructor({
     id,

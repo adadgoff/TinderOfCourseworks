@@ -13,6 +13,8 @@ class StudentBaseSchema(StudentBase):
         populate_by_name=True,
     )
 
+    id: UUID
+
 
 class StudentCreate(StudentBaseSchema):
     id: UUID

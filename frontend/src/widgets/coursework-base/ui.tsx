@@ -1,10 +1,8 @@
-import { Coursework } from "@/entities/coursework";
 import styles from "./styles.module.scss";
 import { formatDateByLocale } from "@/shared/lib/date";
 import { Img } from "@/shared/ui/image";
 import { Icon } from "@/shared/ui/icon";
-
-interface CourseworkBaseProps extends Omit<Coursework, "id" | "skills"> {}
+import { Coursework } from "@/entities/types/coursework";
 
 export function CourseworkBase({
   description,
@@ -12,7 +10,7 @@ export function CourseworkBase({
   lastChange,
   status,
   title,
-}: CourseworkBaseProps) {
+}: Coursework) {
   return (
     <article className={styles.courseworkBase}>
       <Img size="l" src={iconUrl} />
@@ -24,7 +22,8 @@ export function CourseworkBase({
           </span>
           <div className={styles.right}>
             <span className={styles.lastChange}>
-              {formatDateByLocale(lastChange)}
+              {/* {formatDateByLocale(lastChange)} */}
+              {lastChange}
             </span>
             <Icon name={`courseworks/${status}`} size="s" />
           </div>

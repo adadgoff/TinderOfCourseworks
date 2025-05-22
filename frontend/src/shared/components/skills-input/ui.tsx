@@ -1,4 +1,3 @@
-import { Skill } from "@/entities/skill";
 import styles from "./styles.module.scss";
 import { GreyP } from "@/shared/ui/p";
 import { ComponentProps, KeyboardEvent } from "react";
@@ -8,8 +7,8 @@ interface SkillsInputProps extends ComponentProps<"input"> {
   infoText: string;
   maxCount?: number;
   minCount?: number;
-  setSkills?: (skills: Skill[]) => void;
-  skills: Skill[];
+  setSkills?: (skills: string[]) => void;
+  skills: string[];
   skillsInputName: string;
 }
 
@@ -25,9 +24,9 @@ export function SkillsInput({
   const readOnly = !(maxCount && minCount && setSkills);
   const skillsInputId = `skills-input-${skillsInputName}`;
 
-  function handleDeleteSkill(skillName: string) {
+  function handleDeleteSkill(lastSkill: string) {
     if (readOnly) return;
-    setSkills(skills.filter((skill) => skill.name !== skillName));
+    setSkills(skills.filter((skill) => skill !== lastSkill));
   }
   function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     if (readOnly) return;
@@ -36,16 +35,15 @@ export function SkillsInput({
 
     if (event.key === "Enter") {
       event.preventDefault();
-      const skillName = inputValue;
+      const newSkill = inputValue;
 
       if (
-        skillName &&
+        newSkill &&
         skills.every(
-          (skill) => skill.name.toLowerCase() !== skillName.toLowerCase(),
+          (skill) => skill.toLowerCase() !== newSkill.toLowerCase(),
         ) &&
         skills.length < maxCount
       ) {
-        const newSkill = new Skill({ name: skillName });
         setSkills([...skills, newSkill]);
         event.currentTarget.value = "";
       }
@@ -58,7 +56,7 @@ export function SkillsInput({
     ) {
       event.preventDefault();
       const lastSkill = skills[skills.length - 1];
-      handleDeleteSkill(lastSkill.name);
+      handleDeleteSkill(lastSkill);
     }
   }
 
@@ -93,10 +91,10 @@ export function SkillsInput({
         {skills.map((skill) => (
           <Chip
             isDeletable={!readOnly}
-            key={skill.name}
-            onDelete={() => handleDeleteSkill(skill.name)}
+            key={skill}
+            onDelete={() => handleDeleteSkill(skill)}
           >
-            {skill.name}
+            {skill}
           </Chip>
         ))}
         {!readOnly && skills.length < maxCount && (

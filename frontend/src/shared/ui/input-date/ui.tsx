@@ -10,11 +10,11 @@ interface InputDateProps
   iconName?: IconName;
   infoText: string;
   inputDateName: string;
-  max?: Date;
-  min?: Date;
+  max?: string;
+  min?: string;
   required?: boolean;
-  setValue?: (value: Date) => void;
-  value: Date;
+  setValue?: (value: string) => void;
+  value: string;
 }
 
 export function InputDate({
@@ -33,7 +33,7 @@ export function InputDate({
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     if (readOnly) return;
-    setValue(new Date(event.target.value));
+    setValue?.(event.target.value);
   }
 
   return (
@@ -61,7 +61,7 @@ export function InputDate({
           <label className={styles.right} htmlFor={inputDateId}>
             <label htmlFor={inputDateId}>
               <GreyP className={styles.restrictions}>
-                {formatDateByLocale(min)}–{formatDateByLocale(max)}
+                {min}–{max}
               </GreyP>
             </label>
           </label>
@@ -70,13 +70,13 @@ export function InputDate({
 
       <input
         id={inputDateId}
-        max={max ? formatDateByLocale(max, Locale.HTML) : undefined}
-        min={min ? formatDateByLocale(min, Locale.HTML) : undefined}
+        max={max ? max : undefined}
+        min={min ? min : undefined}
         onChange={handleChange}
         readOnly={readOnly}
         required={required}
         type="date"
-        value={formatDateByLocale(value, Locale.HTML)}
+        value={value}
         {...props}
       />
     </div>

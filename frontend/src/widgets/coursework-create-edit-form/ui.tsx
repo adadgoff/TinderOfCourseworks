@@ -1,9 +1,8 @@
 "use client";
 
-import { Skill } from "@/entities/skill";
 import styles from "./styles.module.scss";
 import { CourseworkStatus } from "@/entities/coursework/types";
-import { Coursework } from "@/entities/coursework";
+import { Coursework } from "@/entities/types/coursework";
 import {
   COURSEWORK_ICON_URL_DEFAULT,
   COURSEWORK_MAX_DESCRIPTION_LENGTH,
@@ -11,8 +10,7 @@ import {
   COURSEWORK_MIN_DESCRIPTION_LENGTH,
   COURSEWORK_MIN_SKILLS_COUNT,
 } from "@/entities/coursework/consts";
-import { useReducer } from "react";
-import { compareSkills } from "@/entities/skill/compare";
+import { FormEvent, useReducer } from "react";
 import { ActionHeader } from "../header-action";
 import { GreyHr } from "@/shared/ui/hr";
 import { ImgInput } from "@/shared/components/img-input";
@@ -20,26 +18,29 @@ import { TitleInput } from "@/shared/components/title-input";
 import { DescriptionTextArea } from "@/shared/components/description-textarea";
 import { StatusSelect } from "@/shared/components/status-select";
 import { SkillsInput } from "@/shared/components/skills-input";
+import { UserRole } from "@/entities/user/types";
+import { useRouter } from "next/navigation";
+import { createCoursework, editCoursework } from "@/pages_/api/courseworks";
 
 interface CourseworkCreateFormProps {
   coursework?: never;
   mode: "create";
-  onCreate?: (state: State) => void;
-  onSave?: never;
+  role: UserRole;
+  token: string;
 }
 
 interface CourseworkEditFormProps {
   coursework: Coursework;
   mode: "edit";
-  onCreate?: never;
-  onSave?: (state: State) => void;
+  role: UserRole;
+  token: string;
 }
 
 type State = {
   title: string;
-  iconUrl: string;
+  iconUrl?: string;
   description: string;
-  skills: Skill[];
+  skills: string[];
   status: CourseworkStatus;
 };
 
@@ -47,7 +48,7 @@ type Action =
   | { type: "SET_TITLE"; payload: string }
   | { type: "SET_ICON_URL"; payload: string }
   | { type: "SET_DESCRIPTION"; payload: string }
-  | { type: "SET_SKILLS"; payload: Skill[] }
+  | { type: "SET_SKILLS"; payload: string[] }
   | { type: "SET_STATUS"; payload: CourseworkStatus };
 
 function reducer(state: State, action: Action): State {
@@ -74,14 +75,15 @@ type CourseworkCreateEditFormProps =
 export function CourseworkCreateEditForm({
   coursework,
   mode,
-  onCreate,
-  onSave,
+  token,
+  role,
 }: CourseworkCreateEditFormProps) {
+  const router = useRouter();
   const isCreateForm = mode === "create";
   const initialState: State = isCreateForm
     ? {
         title: "",
-        iconUrl: COURSEWORK_ICON_URL_DEFAULT,
+        iconUrl: undefined,
         description: "",
         skills: [],
         status: CourseworkStatus.Matching,
@@ -104,19 +106,17 @@ export function CourseworkCreateEditForm({
       );
     }
     // <=> mode === "edit".
-    const initialStateSortedSkills = [...initialState.skills].sort(
-      compareSkills,
-    );
-    const stateSortedSkills = [...state.skills].sort(compareSkills);
+    const initialStateSortedSkills = [...initialState.skills].sort();
+    const stateSortedSkills = [...state.skills].sort();
 
     return (
       initialState.title === state.title &&
       initialState.description === state.description &&
-      initialState.iconUrl === state.iconUrl &&
+      // initialState.iconUrl === state.iconUrl &&
       initialState.skills.length === state.skills.length &&
       initialState.status === state.status &&
       initialStateSortedSkills.every(
-        (skill, index) => skill.name === stateSortedSkills[index].name,
+        (skill, index) => skill === stateSortedSkills[index],
       )
     );
   }
@@ -140,18 +140,56 @@ export function CourseworkCreateEditForm({
   }
 
   function handleCancelChanges() {
-    if (isCreateForm) return;
+    if (isCreateForm) {
+      return;
+    }
+
     dispatch({ type: "SET_TITLE", payload: coursework.title });
-    dispatch({ type: "SET_ICON_URL", payload: coursework.iconUrl });
+    // dispatch({ type: "SET_ICON_URL", payload: coursework.iconUrl });
     dispatch({ type: "SET_DESCRIPTION", payload: coursework.description });
     dispatch({ type: "SET_SKILLS", payload: coursework.skills });
     dispatch({ type: "SET_STATUS", payload: coursework.status });
   }
-  function handleCreateCoursework() {
-    // TODO: implement.
+  async function handleCreateCoursework(event: FormEvent) {
+    event.preventDefault();
+
+    if (!isCreateForm) {
+      return;
+    }
+
+    const createdCoursework = await createCoursework({
+      coursework: {
+        title: state.title,
+        description: state.description,
+        status: state.status,
+        skills: state.skills,
+      },
+      role: role,
+      token: token,
+    });
+
+    router.push(`/${role}/courseworks/${createdCoursework.id}/view`);
   }
-  function handleSaveChanges() {
-    // TODO: implement.
+  async function handleSaveChanges(event: FormEvent) {
+    event.preventDefault();
+
+    if (isCreateForm) {
+      return;
+    }
+
+    const editedCoursework = await editCoursework({
+      coursework: {
+        id: coursework.id,
+        title: state.title,
+        description: state.description,
+        status: state.status,
+        skills: state.skills,
+      },
+      role: role,
+      token: token,
+    });
+
+    router.push(`/${role}/courseworks/${editedCoursework.id}/view`);
   }
 
   function setTitle(title: string) {
@@ -167,7 +205,7 @@ export function CourseworkCreateEditForm({
   function setDescription(description: string) {
     dispatch({ type: "SET_DESCRIPTION", payload: description });
   }
-  function setSkills(skills: Skill[]) {
+  function setSkills(skills: string[]) {
     dispatch({ type: "SET_SKILLS", payload: skills });
   }
   function setStatus(status: string) {
@@ -175,23 +213,24 @@ export function CourseworkCreateEditForm({
   }
 
   return (
-    <form className={styles.courseworkCreateEditForm}>
+    <form
+      className={styles.courseworkCreateEditForm}
+      onSubmit={isCreateForm ? handleCreateCoursework : handleSaveChanges}
+    >
       <ActionHeader
-        backUrl="/student/courseworks"
+        backUrl={`/${role}/courseworks`}
         isDisabled={getDisabled()}
         onCancelChangesClick={isCreateForm ? undefined : handleCancelChanges}
-        onCreateCourseworkClick={
-          isCreateForm ? handleCreateCoursework : undefined
-        }
-        onSaveChangesClick={isCreateForm ? undefined : handleSaveChanges}
+        onCreateCourseworkClick={handleCreateCoursework}
+        onSaveChangesClick={handleSaveChanges}
         type={mode}
       />
       <GreyHr />
       <div className={styles.iconTitle}>
         <ImgInput
-          imgUrl={state.iconUrl}
-          hintText="Upload icon"
-          onFileChange={setIconUrl}
+          imgUrl={COURSEWORK_ICON_URL_DEFAULT}
+          // hintText="Upload icon"
+          // onFileChange={setIconUrl}
         />
         <TitleInput title={state.title} setTitle={setTitle} />
       </div>

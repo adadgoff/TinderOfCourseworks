@@ -5,6 +5,15 @@ import Link from "next/link";
 import { Button } from "@/shared/ui/button";
 import { GreyIcon } from "@/shared/ui/icon";
 
+interface InnerHeaderProps {
+  buttonDecor?: ButtonDecor;
+  buttonText?: string;
+  href?: string;
+  iconName?: IconName;
+  openInNewTab?: boolean;
+  title: string;
+}
+
 export function InnerHeader({
   buttonDecor,
   buttonText,
@@ -12,14 +21,7 @@ export function InnerHeader({
   iconName,
   openInNewTab = false,
   title,
-}: {
-  buttonDecor?: ButtonDecor;
-  buttonText?: string;
-  href?: string;
-  iconName?: IconName;
-  openInNewTab?: boolean;
-  title: string;
-}) {
+}: InnerHeaderProps) {
   const showButton = buttonDecor && buttonText && href && iconName;
 
   // TODO: implement has button checks and throw new InnerHeaderException.
@@ -30,7 +32,7 @@ export function InnerHeader({
 
       {showButton && (
         <Link href={href} target={openInNewTab ? "_blank" : "_self"}>
-          <Button className={styles.button} decor={buttonDecor}>
+          <Button decor={buttonDecor}>
             <GreyIcon
               isStroke={buttonDecor === "grey"}
               name={iconName}

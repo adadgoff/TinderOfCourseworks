@@ -1,5 +1,4 @@
 import { isLengthBetween } from "@/shared/lib/common";
-import { Skill } from "../skill";
 import { UserBase } from "../user";
 import { UserBaseProps } from "../user/types";
 import {
@@ -20,22 +19,22 @@ import { formatDateByLocale, isDateBetween } from "@/shared/lib/date";
 
 interface StudentProps extends UserBaseProps {
   iconUrl?: string;
-  lastOnline?: Date;
+  lastOnline?: string;
   city: string;
   contact: string;
-  birthday: Date;
+  birthday: string;
   description: string;
-  skills: Skill[];
+  skills: string[];
 }
 
 export class Student extends UserBase {
   public iconUrl: string;
-  public lastOnline: Date;
+  public lastOnline?: string;
   public city: string;
   public contact: string;
-  public birthday: Date;
+  public birthday: string;
   public description: string;
-  public skills: Skill[];
+  public skills: string[];
 
   constructor({
     id,
@@ -45,7 +44,7 @@ export class Student extends UserBase {
     name,
     patronymic,
     iconUrl = STUDENT_ICON_URL_DEFAULT,
-    lastOnline = new Date(),
+    lastOnline,
     city,
     contact,
     birthday,
@@ -91,9 +90,12 @@ export class Student extends UserBase {
         STUDENT_MAX_BIRTHDAY_DATE,
       )
     ) {
-      errors.push(
-        `Birthday must be between ${formatDateByLocale(STUDENT_MIN_BIRTHDAY_DATE)} and ${formatDateByLocale(STUDENT_MAX_BIRTHDAY_DATE)} dates`,
-      );
+      errors
+        .push
+        // `Birthday must be between ${formatDateByLocale(
+        //   STUDENT_MIN_BIRTHDAY_DATE,
+        // )} and ${formatDateByLocale(STUDENT_MAX_BIRTHDAY_DATE)} dates`,
+        ();
     }
 
     return errors;

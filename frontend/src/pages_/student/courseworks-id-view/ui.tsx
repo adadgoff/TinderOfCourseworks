@@ -1,27 +1,42 @@
 "use client";
 
-import { Coursework } from "@/entities/coursework";
+import { Coursework } from "@/entities/types/coursework";
 import { notFound, useParams } from "next/navigation";
-import { MOCK_COURSEWORKS } from "../../../../mocks/courseworks";
 import { InnerHeader } from "@/widgets/header-inner";
 import { CourseworkView } from "@/widgets/coursework-view";
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
+import { getRoleCoursework } from "@/pages_/api/courseworks";
+import { UserRole } from "@/entities/user/types";
 
 export function StudentCourseworksIdViewPage() {
   const params = useParams();
-  const { id } = params;
+  const courseworkId = typeof params.id === "string" ? params.id : undefined;
+  const [coursework, setCoursework] = useState<Coursework | null>(null);
 
-  const coursework: Coursework | undefined = MOCK_COURSEWORKS.find(
-    (coursework) => coursework.id === id,
-  );
-
-  if (coursework === undefined) {
-    notFound();
+  if (courseworkId === undefined) {
+    return notFound();
   }
+
+  useEffect(
+    function () {
+      const fetchCoursework = async function () {
+        const coursework = await getRoleCoursework({
+          courseworkId: courseworkId,
+          role: UserRole.Student,
+        });
+        setCoursework(coursework);
+      };
+
+      fetchCoursework();
+    },
+    [courseworkId],
+  );
 
   return (
     <>
       <InnerHeader title="View Coursework" />
-      <CourseworkView coursework={coursework} />
+      {coursework && <CourseworkView coursework={coursework} />}
     </>
   );
 }

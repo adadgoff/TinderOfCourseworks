@@ -22,13 +22,24 @@ router = APIRouter(prefix="/supervisor", tags=["Supervisor Coursework"])
 class SupervisorCourseworkRouter:
     session: AsyncSession = Depends(get_db)
 
-    @router.get(path="/{supervisor_id}/courseworks")
+    # @router.get(path="/{supervisor_id}/courseworks")
+    # async def get_supervisor_courseworks(
+    #     self,
+    #     supervisor_id: UUID,
+    # ) -> list[CourseworkRead]:
+    #     courseworks = await supervisor_coursework_service.read_courseworks(
+    #         supervisor_id=supervisor_id,
+    #         session=self.session,
+    #     )
+    #     return courseworks
+
+    @router.get(path="/coursework/personal")
     async def get_supervisor_courseworks(
         self,
-        supervisor_id: UUID,
+        current_supervisor: Supervisor = Depends(get_current_supervisor),
     ) -> list[CourseworkRead]:
         courseworks = await supervisor_coursework_service.read_courseworks(
-            supervisor_id=supervisor_id,
+            supervisor_id=current_supervisor.id,
             session=self.session,
         )
         return courseworks

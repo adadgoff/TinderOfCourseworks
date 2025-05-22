@@ -57,6 +57,7 @@ class SupervisorService:
             session=session,
         )
 
+        await session.refresh(supervisor)
         return supervisor
 
 

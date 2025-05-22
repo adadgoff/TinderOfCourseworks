@@ -76,3 +76,5 @@ src
 - [ ] Add more bio info in profiles (Contacts, Education/Teaching/Working/Research and Publications)
 - [ ] Queries Optimizations: Pagination
 - [ ] Add delete ability
+- [ ] Delete/Update/Logout abilities
+- [ ] Fix `Date` (`lastChange`/`lastOnline`)

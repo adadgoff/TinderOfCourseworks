@@ -1,17 +1,20 @@
 import styles from "./styles.module.scss";
-import { Coursework } from "@/entities/coursework";
-import { User } from "@/entities/user/types";
 import { CourseworkView } from "../coursework-view";
 import { ProfileView } from "../profile-view";
 import { Hr } from "@/shared/ui/hr";
+import { Coursework } from "@/entities/types/coursework";
+import { User } from "@/entities/types/user";
+import { UserRole } from "@/entities/user/types";
 
 interface CourseworkProfileViewProps {
   coursework: Coursework;
+  role: UserRole;
   user: User;
 }
 
 export function CourseworkProfileView({
   coursework,
+  role,
   user,
 }: CourseworkProfileViewProps) {
   return (
@@ -21,7 +24,7 @@ export function CourseworkProfileView({
         coursework={coursework}
       />
       <Hr className={styles.hr} />
-      <ProfileView className={styles.profileView} user={user} />
+      <ProfileView className={styles.profileView} role={role} user={user} />
     </>
   );
 }

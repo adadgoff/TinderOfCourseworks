@@ -5,7 +5,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from src.modules.auth.entities import AuthStudent, AuthSupervisor
 from src.core.config import settings
-from src.modules.auth.schemas import UserLogin, UserRegister
+from src.modules.auth.schemas import UserLogin, UserLoginRead, UserRegister
 from src.modules.auth.security import (
     Token,
     create_access_token,
@@ -28,7 +28,7 @@ class AuthService:
         self,
         student_login: UserLogin,
         session: AsyncSession,
-    ) -> Token:
+    ) -> UserLoginRead:
         student = await auth_repository.read_student_by_email(
             email=student_login.email,
             session=session,
@@ -45,11 +45,16 @@ class AuthService:
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Incorrect credentials",
             )
-        token = create_access_token(
-            subject=student.id,
-            expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+        token = Token(
+            access_token=create_access_token(
+                subject=student.id,
+                expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+            ),
         )
-        return Token(access_token=token)
+        return UserLoginRead(
+            id=student.id,
+            **token.model_dump(),
+        )
 
     async def register_student(
         self,
@@ -107,11 +112,16 @@ class AuthService:
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Incorrect credentials",
             )
-        token = create_access_token(
-            subject=supervisor.id,
-            expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+        token = Token(
+            access_token=create_access_token(
+                subject=supervisor.id,
+                expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+            ),
         )
-        return Token(access_token=token)
+        return UserLoginRead(
+            id=supervisor.id,
+            **token.model_dump(),
+        )
 
     async def register_supervisor(
         self,

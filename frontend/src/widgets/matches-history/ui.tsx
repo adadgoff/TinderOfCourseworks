@@ -1,50 +1,116 @@
 "use client";
 
+import {
+  MatchSt2SvCw,
+  MatchStCw2Sv,
+  MatchSv2StCw,
+  MatchSvCw2St,
+} from "@/entities/types/matches";
 import styles from "./styles.module.scss";
-import { User, UserRole } from "@/entities/user/types";
+import { UserRole } from "@/entities/user/types";
 import { ActionHeader } from "../header-action";
-import { MOCK_STUDENTS } from "../../../mocks/students";
 import { SearchBar } from "@/shared/ui/search-bar";
-import { Coursework } from "@/entities/coursework";
-import { MOCK_COURSEWORKS } from "../../../mocks/courseworks";
-import { MOCK_SUPERVISORS } from "../../../mocks/supervisors";
 import { CourseworkProfilePreview } from "../coursework-profile-preview";
 import { DateTime } from "@/shared/components/date-time";
-import { Match, MatchType } from "@/entities/match/types";
-import { MOCK_MATCHES } from "../../../mocks/matches";
-import { St2SvCwMatch, Sv2StCwMatch } from "@/entities/match";
+import { MatchType } from "@/entities/match/types";
 import { Hr } from "@/shared/ui/hr";
 import { LikeButton, SkipButton } from "@/shared/ui/icon-button";
+import { useEffect, useState } from "react";
+import { Coursework } from "@/entities/types/coursework";
+import { User } from "@/entities/types/user";
+import { getRoleUser } from "@/pages_/api/users";
+import { getRoleCoursework } from "@/pages_/api/courseworks";
 
-export function MatchesHistory({ role }: { role: UserRole }) {
-  // TODO: get user (`useContext`) and matches (api call).
-  const user: User =
-    role === UserRole.Student ? MOCK_STUDENTS[0] : MOCK_SUPERVISORS[0];
-  const matches: Match[] = MOCK_MATCHES.filter((match) => {
-    if (role === UserRole.Student) {
-      return (match as St2SvCwMatch).stId === user.id;
-    } else {
-      return (match as Sv2StCwMatch).svId === user.id;
-    }
-  });
+interface MatchInfo {
+  coursework: Coursework;
+  courseworkRole: UserRole;
+  user: User;
+  userRole: UserRole;
+}
 
-  function getCourseworkForMatch(match: Match): Coursework {
-    if (role === UserRole.Student) {
-      const svCwId = (match as St2SvCwMatch).svCwId.split("_")[1];
-      return MOCK_COURSEWORKS.find((cw) => cw.id === svCwId)!;
-    }
-    const stCwId = (match as Sv2StCwMatch).stCwId.split("_")[1];
-    return MOCK_COURSEWORKS.find((cw) => cw.id === stCwId)!;
-  }
+// <=> Outcomes.
+export function MatchesHistory({
+  matches,
+  role,
+}: {
+  matches: (MatchSt2SvCw | MatchStCw2Sv)[] | (MatchSv2StCw | MatchSvCw2St)[];
+  role: UserRole;
+}) {
+  const [matchesInfo, setMatchesInfo] = useState<MatchInfo[]>([]);
 
-  function getUserForMatch(match: Match): User {
-    if (role === UserRole.Student) {
-      const svId = (match as St2SvCwMatch).svCwId.split("_")[0];
-      return MOCK_SUPERVISORS.find((sv) => sv.id === svId)!;
+  useEffect(() => {
+    async function fetchData() {
+      const promises = matches.map(async (match) => {
+        if (role === UserRole.Student) {
+          if ("svId" in match && "stCwId" in match) {
+            const [user, coursework] = await Promise.all([
+              getRoleUser({ role: UserRole.Supervisor, userId: match.svId }),
+              getRoleCoursework({
+                courseworkId: match.stCwId,
+                role: UserRole.Student,
+              }),
+            ]);
+            return {
+              coursework: coursework,
+              courseworkRole: UserRole.Student,
+              user: user,
+              userRole: UserRole.Supervisor,
+            };
+          } else if ("svCwId" in match && "stId" in match) {
+            const [user, coursework] = await Promise.all([
+              getRoleUser({ role: UserRole.Student, userId: match.stId }),
+              getRoleCoursework({
+                courseworkId: match.svCwId,
+                role: UserRole.Supervisor,
+              }),
+            ]);
+            return {
+              coursework: coursework,
+              courseworkRole: UserRole.Supervisor,
+              user: user,
+              userRole: UserRole.Student,
+            };
+          }
+        } else if (role === UserRole.Supervisor) {
+          if ("stId" in match && "svCwId" in match) {
+            const [user, coursework] = await Promise.all([
+              getRoleUser({ role: UserRole.Student, userId: match.stId }),
+              getRoleCoursework({
+                courseworkId: match.svCwId,
+                role: UserRole.Supervisor,
+              }),
+            ]);
+            return {
+              coursework: coursework,
+              courseworkRole: UserRole.Supervisor,
+              user: user,
+              userRole: UserRole.Student,
+            };
+          } else if ("stCwId" in match && "svId" in match) {
+            const [user, coursework] = await Promise.all([
+              getRoleUser({ role: UserRole.Supervisor, userId: match.svId }),
+              getRoleCoursework({
+                courseworkId: match.stCwId,
+                role: UserRole.Student,
+              }),
+            ]);
+            return {
+              coursework: coursework,
+              courseworkRole: UserRole.Student,
+              user: user,
+              userRole: UserRole.Supervisor,
+            };
+          }
+        }
+        return null;
+      });
+
+      const results = await Promise.all(promises);
+      setMatchesInfo(results.filter(Boolean) as MatchInfo[]);
     }
-    const stId = (match as Sv2StCwMatch).stCwId.split("_")[0];
-    return MOCK_STUDENTS.find((st) => st.id === stId)!;
-  }
+
+    fetchData();
+  }, [matches, role]);
 
   return (
     <section className={styles.matchesHistory}>
@@ -52,30 +118,35 @@ export function MatchesHistory({ role }: { role: UserRole }) {
       {/* TODO: implement. */}
       {/* <SearchBar /> */}
       <div className={styles.matches}>
-        {matches.map((match) => {
-          const coursework = getCourseworkForMatch(match);
-          const matchedUser = getUserForMatch(match);
+        <div className={styles.leftMatches}>
+          <span>{`Outcome matches: ${matches.length}`}</span>
+        </div>
+
+        {matchesInfo.map((matchInfo, index) => {
+          const { coursework, courseworkRole, user, userRole } = matchInfo;
 
           return (
-            <form key={match.id} className={styles.match}>
+            <form className={styles.match} key={index}>
               <div className={styles.courseworkProfile}>
-                <DateTime datetime={match.createdAt} />
+                <DateTime datetime={matches[index].matchedAt!} />
                 <CourseworkProfilePreview
                   coursework={coursework}
-                  user={matchedUser}
+                  user={user}
+                  courseworkHref={`/${courseworkRole}/courseworks/${coursework.id}/view`}
+                  userHref={`/${userRole}/profile/${user.id}`}
                 />
               </div>
-
               <Hr className={styles.hr} />
-
               <div className={styles.buttons}>
                 <LikeButton
-                  isActive={match.type === MatchType.LIKE}
+                  disabled={true}
+                  isActive={matches[index].type === MatchType.Like}
                   onLike={() => {}}
                   type="button"
                 />
                 <SkipButton
-                  isActive={match.type === MatchType.SKIP}
+                  disabled={true}
+                  isActive={matches[index].type === MatchType.Skip}
                   onSkip={() => {}}
                   type="button"
                 />

@@ -29,7 +29,8 @@ export function ProfileBase({
             <b>{fullName}</b>
           </span>
           <span className={styles.lastOnline}>
-            {formatDateByLocale(lastOnline)}
+            {/* {formatDateByLocale(lastOnline)} */}
+            {lastOnline}
           </span>
         </header>
 

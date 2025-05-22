@@ -57,6 +57,7 @@ class StudentService:
             session=session,
         )
 
+        await session.refresh(student)
         return student
 
 

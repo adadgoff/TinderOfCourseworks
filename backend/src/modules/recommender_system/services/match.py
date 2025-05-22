@@ -138,11 +138,17 @@ class MatchService:
         supervisor_coursework: SupervisorCoursework,
         session: AsyncSession,
     ) -> MatchSt2SvCw | None:
-        return await match_repository.read_st_2_sv_cw_match(
+        match = await match_repository.read_st_2_sv_cw_match(
             st_id=student.id,
             sv_cw_id=supervisor_coursework.id,
             session=session,
         )
+        if match is not None:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Match `St2SvCw` already exists",
+            )
+        return match
 
     async def read_st_cw_2_sv_match(
         self,
@@ -150,11 +156,17 @@ class MatchService:
         supervisor: Supervisor,
         session: AsyncSession,
     ) -> MatchStCw2Sv | None:
-        return await match_repository.read_st_cw_2_sv_match(
+        match = await match_repository.read_st_cw_2_sv_match(
             st_cw_id=student_coursework.id,
             sv_id=supervisor.id,
             session=session,
         )
+        if match is not None:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Match `StCw2Sv` already exists",
+            )
+        return match
 
     async def read_sv_2_st_cw_match(
         self,
@@ -162,11 +174,17 @@ class MatchService:
         student_coursework: StudentCoursework,
         session: AsyncSession,
     ) -> MatchSv2StCw | None:
-        return await match_repository.read_sv_2_st_cw_match(
+        match = await match_repository.read_sv_2_st_cw_match(
             sv_id=supervisor.id,
             st_cw_id=student_coursework.id,
             session=session,
         )
+        if match is not None:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Match `Sv2StCw` already exists",
+            )
+        return match
 
     async def read_sv_cw_2_st_match(
         self,
@@ -174,11 +192,17 @@ class MatchService:
         student: Student,
         session: AsyncSession,
     ) -> MatchSvCw2St | None:
-        return await match_repository.read_sv_cw_2_st_match(
+        match = await match_repository.read_sv_cw_2_st_match(
             sv_cw_id=supervisor_coursework.id,
             st_id=student.id,
             session=session,
         )
+        if match is not None:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Match `SvCw2St` already exists",
+            )
+        return match
 
     async def create_st_2_sv_cw_match(
         self,
@@ -191,6 +215,13 @@ class MatchService:
             coursework_id=match_create.sv_cw_id,
             session=session,
         )
+        # Check match existence.
+        await self.read_st_2_sv_cw_match(
+            student=current_student,
+            supervisor_coursework=supervisor_coursework,
+            session=session,
+        )
+
         match = await match_repository.create_st_2_sv_cw_match(
             match_create=match_create,
             st_id=current_student.id,
@@ -224,19 +255,23 @@ class MatchService:
             coursework_id=match_create.st_cw_id,
             session=session,
         )
-
         # Check supervisor existence.
         supervisor = await supervisor_service.read_supervisor(
             supervisor_id=match_create.sv_id,
             session=session,
         )
-
         # Check student coursework owner.
         if student_coursework.student_id != current_student.id:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Student not allowed to create match with not own student coursework",
             )
+        # Check match existence.
+        await self.read_st_cw_2_sv_match(
+            student_coursework=student_coursework,
+            supervisor=supervisor,
+            session=session,
+        )
 
         match = await match_repository.create_st_cw_2_sv_match(
             match_create=match_create,
@@ -271,6 +306,13 @@ class MatchService:
             coursework_id=match_create.st_cw_id,
             session=session,
         )
+        # Check match existence.
+        await self.read_sv_2_st_cw_match(
+            supervisor=current_supervisor,
+            student_coursework=student_coursework,
+            session=session,
+        )
+
         match = await match_repository.create_sv_2_st_cw_match(
             match_create=match_create,
             sv_id=current_supervisor.id,
@@ -304,20 +346,23 @@ class MatchService:
             coursework_id=match_create.sv_cw_id,
             session=session,
         )
-
         # Check student existence.
         student = await student_service.read_student(
             student_id=match_create.st_id,
             session=session,
         )
-
         # Check supervisor coursework owner.
         if supervisor_coursework.supervisor_id != current_supervisor.id:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Supervisor not allowed to create match with not own supervisor coursework",
             )
-
+        # Check match existence.
+        await self.read_sv_cw_2_st_match(
+            supervisor_coursework=supervisor_coursework,
+            student=student,
+            session=session,
+        )
         match = await match_repository.create_sv_cw_2_st_match(
             match_create=match_create,
             session=session,

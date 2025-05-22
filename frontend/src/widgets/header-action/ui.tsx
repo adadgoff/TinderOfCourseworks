@@ -3,13 +3,14 @@ import styles from "./styles.module.scss";
 import { BackButton } from "@/shared/ui/icon-button/back-button";
 import Link from "next/link";
 import { ActionHeaderException } from "./errors";
+import { FormEvent } from "react";
 
 interface ActionHeaderProps {
   backUrl: string;
   isDisabled?: boolean;
   onCancelChangesClick?: () => void;
-  onCreateCourseworkClick?: () => void;
-  onSaveChangesClick?: () => void;
+  onCreateCourseworkClick?: (event: FormEvent) => void;
+  onSaveChangesClick?: (event: FormEvent) => void;
   type?: "create" | "edit" | "view";
 }
 

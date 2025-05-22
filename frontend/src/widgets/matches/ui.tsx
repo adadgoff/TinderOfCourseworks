@@ -1,62 +1,216 @@
 "use client";
 
-import { User, UserRole } from "@/entities/user/types";
-import { MOCK_STUDENTS } from "../../../mocks/students";
-import { Coursework } from "@/entities/coursework";
-import { MOCK_COURSEWORKS } from "../../../mocks/courseworks";
-import { useState } from "react";
-import { MOCK_SUPERVISORS } from "../../../mocks/supervisors";
+import { UserRole } from "@/entities/user/types";
+import { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import { CourseworkSelect } from "../coursework-select";
 import { CourseworkProfileView } from "../coursework-profile-view";
 import { Hr } from "@/shared/ui/hr";
 import { LikeButton, SkipButton } from "@/shared/ui/icon-button";
+import { User } from "@/entities/types/user";
+import Cookies from "js-cookie";
+import { Coursework } from "@/entities/types/coursework";
+import { notFound } from "next/navigation";
+import {
+  MatchSt2SvCw,
+  MatchStCw2Sv,
+  MatchSv2StCw,
+  MatchSvCw2St,
+} from "@/entities/types/matches";
+import { CourseworkProfilePreview } from "../coursework-profile-preview";
+import { getRoleUser } from "@/pages_/api/users";
+import { getRoleCoursework } from "@/pages_/api/courseworks";
+import { MatchType } from "@/entities/match/types";
+import {
+  postMatchSt2SvCw,
+  postMatchStCw2Sv,
+} from "@/pages_/api/student-matches";
+import {
+  postMatchSv2StCw,
+  postMatchSvCw2St,
+} from "@/pages_/api/supervisor-matches";
 
-export function Matches({ role }: { role: UserRole }) {
-  // TODO: get user (`useContext`) and user courseworks (api).
-  const user: User = MOCK_STUDENTS[0];
-  const courseworks: Coursework[] = MOCK_COURSEWORKS;
-  const [userCurrentCoursework, setUserCurrentCoursework] =
-    useState<Coursework | null>(null);
-  const [newMatches, setNewMatches] = useState(0);
+interface MatchInfo {
+  coursework: Coursework;
+  courseworkRole: UserRole;
+  user: User;
+  userRole: UserRole;
+}
 
-  const recommendedCoursework: Coursework = MOCK_COURSEWORKS[1];
-  const recommendedCourseworkOwner: User = MOCK_SUPERVISORS[1];
-  const recommendedOppositeRoleUserForCurrentCoursework: User =
-    MOCK_SUPERVISORS[2];
+// <=> Incomes.
+export function Matches({
+  matches,
+  role,
+  token,
+}: {
+  matches: (MatchSt2SvCw | MatchStCw2Sv)[] | (MatchSv2StCw | MatchSvCw2St)[];
+  role: UserRole;
+  token: string;
+}) {
+  const [matchesInfo, setMatchesInfo] = useState<MatchInfo[]>([]);
+
+  async function handleMatch({
+    matchInfo,
+    matchType,
+  }: {
+    matchInfo: MatchInfo;
+    matchType: MatchType;
+  }) {
+    const { coursework, courseworkRole, user, userRole } = matchInfo;
+    if (role === UserRole.Student) {
+      if (
+        userRole === UserRole.Supervisor &&
+        courseworkRole === UserRole.Student
+      ) {
+        postMatchStCw2Sv({
+          match: { stCwId: coursework.id!, svId: user.id, type: matchType },
+          studentToken: token,
+        });
+      } else if (
+        courseworkRole === UserRole.Supervisor &&
+        userRole === UserRole.Student
+      ) {
+        postMatchSt2SvCw({
+          match: { stId: user.id, svCwId: coursework.id!, type: matchType },
+          studentToken: token,
+        });
+      }
+    } else if (role === UserRole.Supervisor) {
+      if (
+        userRole === UserRole.Student &&
+        courseworkRole === UserRole.Supervisor
+      ) {
+        postMatchSvCw2St({
+          match: { svCwId: coursework.id!, stId: user.id, type: matchType },
+          supervisorToken: token,
+        });
+      } else if (
+        courseworkRole === UserRole.Student &&
+        userRole === UserRole.Supervisor
+      ) {
+        postMatchSv2StCw({
+          match: { svId: user.id, stCwId: coursework.id!, type: matchType },
+          supervisorToken: token,
+        });
+      }
+    }
+  }
+
+  useEffect(() => {
+    async function fetchData() {
+      const promises = matches.map(async (match) => {
+        if (role === UserRole.Student) {
+          if ("svId" in match && "stCwId" in match) {
+            const [user, coursework] = await Promise.all([
+              getRoleUser({ role: UserRole.Supervisor, userId: match.svId }),
+              getRoleCoursework({
+                courseworkId: match.stCwId,
+                role: UserRole.Student,
+              }),
+            ]);
+            return {
+              coursework: coursework,
+              courseworkRole: UserRole.Student,
+              user: user,
+              userRole: UserRole.Supervisor,
+            };
+          } else if ("svCwId" in match && "stId" in match) {
+            const [user, coursework] = await Promise.all([
+              getRoleUser({ role: UserRole.Student, userId: match.stId }),
+              getRoleCoursework({
+                courseworkId: match.svCwId,
+                role: UserRole.Supervisor,
+              }),
+            ]);
+            return {
+              coursework: coursework,
+              courseworkRole: UserRole.Supervisor,
+              user: user,
+              userRole: UserRole.Student,
+            };
+          }
+        } else if (role === UserRole.Supervisor) {
+          if ("stId" in match && "svCwId" in match) {
+            const [user, coursework] = await Promise.all([
+              getRoleUser({ role: UserRole.Student, userId: match.stId }),
+              getRoleCoursework({
+                courseworkId: match.svCwId,
+                role: UserRole.Supervisor,
+              }),
+            ]);
+            return {
+              coursework: coursework,
+              courseworkRole: UserRole.Supervisor,
+              user: user,
+              userRole: UserRole.Student,
+            };
+          } else if ("stCwId" in match && "svId" in match) {
+            const [user, coursework] = await Promise.all([
+              getRoleUser({ role: UserRole.Supervisor, userId: match.svId }),
+              getRoleCoursework({
+                courseworkId: match.stCwId,
+                role: UserRole.Student,
+              }),
+            ]);
+            return {
+              coursework: coursework,
+              courseworkRole: UserRole.Student,
+              user: user,
+              userRole: UserRole.Supervisor,
+            };
+          }
+        }
+        return null;
+      });
+
+      const results = await Promise.all(promises);
+      setMatchesInfo(results.filter(Boolean) as MatchInfo[]);
+    }
+
+    fetchData();
+  }, [matches, role]);
 
   return (
     <section className={styles.matches}>
-      <CourseworkSelect
-        currentCoursework={userCurrentCoursework}
-        courseworks={courseworks}
-        setCurrentCoursework={setUserCurrentCoursework}
-      />
-
       <div className={styles.leftMatches}>
-        <span>{`Left matches: ${newMatches}`}</span>
+        <span>{`Income matches: ${matches.length}`}</span>
       </div>
 
-      <form className={styles.match}>
-        {userCurrentCoursework === null ? (
-          <CourseworkProfileView
-            coursework={recommendedCoursework}
-            user={recommendedCourseworkOwner}
-          />
-        ) : (
-          <CourseworkProfileView
-            coursework={userCurrentCoursework}
-            user={recommendedOppositeRoleUserForCurrentCoursework}
-          />
-        )}
+      {matchesInfo.map((matchInfo, index) => {
+        const { coursework, user, userRole } = matchInfo;
 
-        <Hr className={styles.hr} />
+        return (
+          <form className={styles.match} key={index}>
+            <CourseworkProfileView
+              coursework={coursework}
+              role={userRole}
+              user={user}
+            />
+            <Hr className={styles.hr} />
 
-        <div className={styles.buttons}>
-          <LikeButton onLike={() => {}} type="button" />
-          <SkipButton onSkip={() => {}} type="button" />
-        </div>
-      </form>
+            <div className={styles.buttons}>
+              <LikeButton
+                onLike={() =>
+                  handleMatch({
+                    matchInfo: matchInfo,
+                    matchType: MatchType.Like,
+                  })
+                }
+                type="button"
+              />
+              <SkipButton
+                onSkip={() =>
+                  handleMatch({
+                    matchInfo: matchInfo,
+                    matchType: MatchType.Skip,
+                  })
+                }
+                type="button"
+              />
+            </div>
+          </form>
+        );
+      })}
     </section>
   );
 }

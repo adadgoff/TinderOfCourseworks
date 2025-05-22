@@ -18,6 +18,17 @@ router = APIRouter(prefix="/supervisor", tags=["Supervisor"])
 class SupervisorRouter:
     session: AsyncSession = Depends(get_db)
 
+    @router.get(path="/personal")
+    async def get_supervisor_personal(
+        self,
+        current_supervisor: Supervisor = Depends(get_current_supervisor),
+    ) -> SupervisorRead:
+        supervisor = await supervisor_service.read_supervisor(
+            supervisor_id=current_supervisor.id,
+            session=self.session,
+        )
+        return supervisor
+
     @router.get(path="/{supervisor_id}")
     async def get_supervisor(
         self,

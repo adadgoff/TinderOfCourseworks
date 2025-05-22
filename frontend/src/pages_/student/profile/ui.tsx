@@ -1,12 +1,36 @@
-"use client"; // TODO: for future `useContext`.
+"use client";
 
-import { Student } from "@/entities/student";
+import { User } from "@/entities/types/user";
 import { InnerHeader } from "@/widgets/header-inner";
 import { ProfileView } from "@/widgets/profile-view";
-import { MOCK_STUDENTS } from "../../../../mocks/students";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import { notFound } from "next/navigation";
+import { getPersonalRoleUser } from "@/pages_/api/users";
+import { UserRole } from "@/entities/user/types";
 
 export function StudentProfilePage() {
-  const student: Student = MOCK_STUDENTS[0];
+  const [student, setStudent] = useState<User | null>(null);
+  const studentToken = Cookies.get("studentToken");
+
+  if (studentToken === undefined) {
+    return notFound();
+  }
+
+  useEffect(
+    function () {
+      const fetchStudent = async function () {
+        const student = await getPersonalRoleUser({
+          role: UserRole.Student,
+          token: studentToken,
+        });
+        setStudent(student);
+      };
+
+      fetchStudent();
+    },
+    [studentToken],
+  );
 
   return (
     <>
@@ -17,7 +41,7 @@ export function StudentProfilePage() {
         iconName="common/edit"
         title="My Profile"
       />
-      <ProfileView user={student} />
+      {student && <ProfileView role={UserRole.Student} user={student} />}
     </>
   );
 }
