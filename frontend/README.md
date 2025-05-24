@@ -66,7 +66,6 @@ src
 
 - [ ] Do adaptive versions
 - [ ] Add languages support
-- [ ] Do more available interfaces
 - [ ] Improve code decisions (e.g. <Link><Button></Button></Link> is overkill)
 - [ ] Create infrastructure:
   - [ ] Add logging & monitoring: Grafana | Prometheus | Jaeger
