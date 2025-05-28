@@ -9,7 +9,7 @@ import { Explore } from "@/widgets/explore";
 import { InnerHeader } from "@/widgets/header-inner";
 import Cookies from "js-cookie";
 import { notFound } from "next/navigation";
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export function StudentExplorePage() {
   const studentToken = Cookies.get("studentToken");
